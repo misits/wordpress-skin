@@ -1,0 +1,7 @@
+/* {{THEME_NAME}} Main CSS */
+@import "tailwindcss";
+
+/* Custom styles (keep minimal - use Tailwind utilities instead) */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}

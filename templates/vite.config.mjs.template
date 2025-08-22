@@ -1,0 +1,39 @@
+import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss()
+  ],
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        app: './src/js/app.js'
+      },
+      output: {
+        entryFileNames: 'js/[name].[hash].js',
+        chunkFileNames: 'js/[name].[hash].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'css/[name].[hash].css';
+          }
+          return 'assets/[name].[hash][extname]';
+        }
+      }
+    },
+    manifest: true
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    cors: true,
+    strictPort: true,
+    hmr: {
+      host: 'localhost'
+    }
+  }
+});

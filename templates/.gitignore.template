@@ -1,0 +1,68 @@
+# WP-Skin Development Files
+# Exclude development and build files that shouldn't be in production
+
+# Node modules and build artifacts
+resources/node_modules/
+resources/.npm/
+resources/.yarn/
+resources/yarn-error.log
+resources/npm-debug.log*
+resources/yarn-debug.log*
+resources/yarn-error.log*
+
+# Development server files
+resources/.vite/
+resources/.cache/
+
+# Source files (keep built files only)
+resources/src/
+resources/package.json
+resources/package-lock.json
+resources/yarn.lock
+resources/vite.config.mjs
+resources/webpack.config.js
+resources/rollup.config.js
+resources/README.md
+
+# SCSS source files (keep compiled CSS only)
+resources/**/*.scss
+resources/**/*.sass
+
+# Development configs
+resources/.eslintrc*
+resources/.prettierrc*
+resources/tsconfig.json
+resources/babel.config.js
+resources/.env.local
+resources/.env.development
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+resources/logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# WordPress debug
+debug.log
+wp-content/debug.log
+
+# Deployment builds
+*-production/

@@ -1,0 +1,18 @@
+<?php
+/**
+ * Footer Component
+ * 
+ * Usage: skin_component('footer');
+ */
+
+$site_name = get_bloginfo('name');
+$current_year = date('Y');
+?>
+
+<footer class="bg-gray-50 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center text-gray-600">
+            <p>&copy; <?php echo $current_year; ?> <?php echo esc_html($site_name); ?>. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

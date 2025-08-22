@@ -1,0 +1,110 @@
+<?php
+/**
+ * {{THEME_NAME}} - WP-Skin Configuration
+ * 
+ * Minimal WordPress theme powered by WP-Skin and Tailwind CSS
+ * 
+ * @package {{THEME_NAME}}
+ */
+
+defined('ABSPATH') or exit;
+
+use WordPressSkin\Core\Skin;
+
+/*
+|--------------------------------------------------------------------------
+| Theme Assets
+|--------------------------------------------------------------------------
+| Minimal asset configuration - Vite handles modern JS automatically
+*/
+
+Skin::assets()
+    ->css('style')                    // Auto-detects resources/assets/css/style.css
+    ->js('main');                     // Auto-detects resources/assets/js/main.js
+
+/*
+|--------------------------------------------------------------------------
+| WordPress Customizer (Optional)
+|--------------------------------------------------------------------------
+| Add custom theme options - keep minimal, use Tailwind for styling
+*/
+
+// Example customizer section (uncomment if needed)
+/*
+Skin::customizer('theme_options', function($section) {
+    $section->title('Theme Options')
+            ->description('Basic theme customization');
+    
+    $section->setting('primary_color')
+            ->label('Primary Color')
+            ->control('color')
+            ->default('#3B82F6'); // Tailwind blue-500
+});
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Theme Components
+|--------------------------------------------------------------------------
+| Components are auto-discovered from resources/components/*.php
+| No manual registration needed - just create the files!
+*/
+
+/*
+|--------------------------------------------------------------------------
+| WordPress Hooks
+|--------------------------------------------------------------------------
+| Add theme-specific WordPress actions and filters
+*/
+
+Skin::hooks()
+    ->action('after_setup_theme', function() {
+        // Essential WordPress theme features
+        add_theme_support('post-thumbnails');
+        add_theme_support('title-tag');
+        add_theme_support('html5', ['search-form', 'comment-form', 'comment-list']);
+        
+        // Register navigation menus
+        register_nav_menus([
+            'primary' => 'Primary Navigation'
+        ]);
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Modern JavaScript Frameworks (Optional)
+|--------------------------------------------------------------------------
+| Vite automatically handles React, Vue, and other modern JS frameworks
+| Just install the dependencies and update src/js/app.js
+*/
+
+/*
+// Example: React setup
+// 1. npm install react react-dom
+// 2. Update src/js/app.js:
+
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+const App = () => (
+    <div className="p-4">
+        <h1 className="text-2xl font-bold text-blue-600">Hello React!</h1>
+    </div>
+);
+
+const container = document.getElementById('react-app');
+if (container) {
+    const root = createRoot(container);
+    root.render(<App />);
+}
+*/
+
+/*
+|--------------------------------------------------------------------------
+| That's it! 
+|--------------------------------------------------------------------------
+| Your theme is ready. Create components in resources/components/
+| and use Tailwind utilities for styling.
+|
+| For custom functions, create separate files in your theme directory.
+*/

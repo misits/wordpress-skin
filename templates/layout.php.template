@@ -1,0 +1,25 @@
+<?php
+/**
+ * Default Layout
+ * 
+ * Usage: skin_layout('default', ['content' => $content]);
+ */
+
+get_header();
+?>
+
+<div class="site-content">
+    <div class="container">
+        <main class="main-content">
+            <?php echo $content ?? ''; ?>
+        </main>
+        
+        <?php if (is_active_sidebar('sidebar-1')): ?>
+            <aside class="sidebar">
+                <?php dynamic_sidebar('sidebar-1'); ?>
+            </aside>
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php get_footer(); ?>

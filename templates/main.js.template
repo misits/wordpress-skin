@@ -1,0 +1,27 @@
+/**
+ * {{THEME_NAME}} Main JavaScript
+ * 
+ * Modern JavaScript entry point for theme functionality
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('{{THEME_NAME}} theme loaded');
+    
+    // Initialize theme features
+    initTheme();
+});
+
+function initTheme() {
+    // Theme-specific JavaScript initialization
+    console.log('Theme initialized');
+    
+    // Example: Mobile menu toggle
+    const mobileMenuButton = document.querySelector('[data-mobile-menu-toggle]');
+    const mobileMenu = document.querySelector('[data-mobile-menu]');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+}

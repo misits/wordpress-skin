@@ -1,0 +1,77 @@
+# {{THEME_NAME}} Resources
+
+Minimal WordPress theme powered by WP-Skin and Tailwind CSS.
+
+## Directory Structure
+
+```
+resources/
+├── src/                    # Source files (development only)
+│   ├── js/                 # JavaScript source files
+│   │   └── app.js          # Main JS entry point
+│   └── scss/               # Minimal SCSS files
+│       ├── style.scss      # Main SCSS (imports Tailwind)
+│       └── _variables.scss # Optional custom variables
+├── assets/                 # Compiled assets (auto-generated)
+│   ├── css/               # Compiled CSS files
+│   └── js/                # Compiled JS files
+├── dist/                  # Vite build output (production)
+├── components/            # PHP components (header, footer)
+├── layouts/               # PHP layouts
+├── views/                 # PHP views
+├── package.json           # Node.js dependencies
+└── vite.config.mjs        # Vite configuration
+```
+
+## Development
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+## Philosophy
+
+This theme is **Tailwind-first**:
+- Use Tailwind utility classes instead of custom CSS
+- Keep SCSS minimal - only for what Tailwind can't handle
+- Components are auto-discovered from `components/` directory
+- No manual registration needed
+
+## Usage
+
+### Components
+Components are auto-registered. Just create files and use them:
+
+```php
+// components/my-component.php
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-bold text-gray-900"><?php echo esc_html($title ?? 'Title'); ?></h2>
+    <p class="text-gray-600 mt-2"><?php echo esc_html($content ?? ''); ?></p>
+</div>
+```
+
+Use in templates:
+```php
+skin_component('my-component', ['title' => 'Hello World', 'content' => 'Content here']);
+```
+
+### Styling
+- **Prefer Tailwind**: Use `bg-blue-500`, `text-center`, `flex`, etc.
+- **Custom CSS**: Only add to `style.scss` for things Tailwind can't do
+
+### Modern JavaScript
+Add your JavaScript to `src/js/app.js`. Vite handles the rest automatically.
+
+## Tailwind CSS
+Tailwind CSS v4 is included and configured. Use utility classes directly in your PHP templates and components.

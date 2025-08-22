@@ -1,0 +1,36 @@
+/**
+ * {{THEME_NAME}} Modern JS Entry Point
+ * 
+ * This is the main entry point for modern JavaScript frameworks
+ * Configure for React, Vue, or vanilla JS as needed
+ */
+
+// Import CSS (which includes Tailwind)
+import '../css/app.css';
+
+// Example: React setup
+// import React from 'react';
+// import { createRoot } from 'react-dom/client';
+// import App from './components/App';
+
+// Example: Vue setup
+// import { createApp } from 'vue';
+// import App from './components/App.vue';
+
+// Example: Vanilla JS
+console.log('{{THEME_NAME}} modern JS loaded');
+
+// Auto-initialize components
+document.addEventListener('DOMContentLoaded', () => {
+    initializeComponents();
+});
+
+function initializeComponents() {
+    // Component initialization logic
+    console.log('Initializing modern components');
+}
+
+// Export for external use
+export default {
+    initializeComponents
+};
