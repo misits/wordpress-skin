@@ -52,6 +52,50 @@ Skin::customizer('theme_options', function($section) {
 
 /*
 |--------------------------------------------------------------------------
+| Custom Post Types (Optional)
+|--------------------------------------------------------------------------
+| Register custom post types with minimal configuration
+*/
+
+// Example: Custom post types (uncomment if needed)
+/*
+Skin::postTypes()
+    ->add('portfolio', 'Portfolio Item', 'Portfolio', [        // Portfolio post type
+        'menu_icon' => 'dashicons-portfolio',
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt']
+    ])
+    ->add('service', 'Service', 'Services', [                 // Services post type 
+        'menu_icon' => 'dashicons-admin-tools',
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt']
+    ])
+    ->add('project', 'Project', 'Projects', [                 // Custom project post type
+        'menu_icon' => 'dashicons-hammer',
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt']
+    ]);
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Taxonomies (Optional)  
+|--------------------------------------------------------------------------
+| Register taxonomies for your custom post types
+*/
+
+// Example taxonomies (uncomment if needed)
+/*
+Skin::taxonomies()
+    ->categories(['portfolio', 'service'])                               // Categories for portfolio and services
+    ->add('skill', ['portfolio', 'team_member'], 'Skill', 'Skills')      // Custom skill taxonomy
+    ->add('industry', 'portfolio', 'Industry', 'Industries')            // Custom industry taxonomy
+    ->add('location', 'team_member', 'Location', 'Locations')           // Custom location taxonomy
+    ->add('difficulty', 'project', 'Difficulty', 'Difficulties', [      // Custom taxonomy with options
+        'hierarchical' => true,
+        'show_admin_column' => true
+    ]);
+*/
+
+/*
+|--------------------------------------------------------------------------
 | WordPress Hooks
 |--------------------------------------------------------------------------
 | Add theme-specific WordPress actions and filters

@@ -14,6 +14,8 @@ use WordPressSkin\Traits\HandlesAssets;
 use WordPressSkin\Traits\HandlesHooks;
 use WordPressSkin\Traits\HandlesLayouts;
 use WordPressSkin\Traits\HandlesComponents;
+use WordPressSkin\Traits\HandlesPostTypes;
+use WordPressSkin\Traits\HandlesTaxonomies;
 
 defined('ABSPATH') or exit;
 
@@ -23,6 +25,8 @@ class Skin {
     use HandlesHooks;
     use HandlesLayouts;
     use HandlesComponents;
+    use HandlesPostTypes;
+    use HandlesTaxonomies;
     
     /**
      * Singleton instance
@@ -130,6 +134,24 @@ class Skin {
     }
     
     /**
+     * Static method to access post types functionality
+     * 
+     * @return \WordPressSkin\PostTypes\PostTypeManager
+     */
+    public static function postTypes() {
+        return self::getInstance()->getPostTypeManager();
+    }
+    
+    /**
+     * Static method to access taxonomies functionality
+     * 
+     * @return \WordPressSkin\Taxonomies\TaxonomyManager
+     */
+    public static function taxonomies() {
+        return self::getInstance()->getTaxonomyManager();
+    }
+    
+    /**
      * Get theme root directory
      * 
      * @return string
@@ -167,6 +189,8 @@ class Skin {
         $this->initializeHooks();
         $this->initializeLayouts();
         $this->initializeComponents();
+        $this->initializePostTypes();
+        $this->initializeTaxonomies();
     }
     
     /**

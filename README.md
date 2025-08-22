@@ -18,7 +18,6 @@ Include WP-Skin in your WordPress theme:
 
 ```php
 // In your theme's functions.php
-define('WPSKIN_MODE', 'theme');
 require_once get_template_directory() . '/lib/wp-skin/bootstrap.php';
 ```
 
@@ -70,6 +69,18 @@ use WordPressSkin\Core\Skin;
 Skin::assets()
     ->css('style')
     ->js('main');
+
+// Custom Post Types (optional)
+Skin::postTypes()
+    ->add('portfolio', 'Portfolio Item', 'Portfolio')         // Portfolio post type
+    ->add('service', 'Service', 'Services')                   // Services post type
+    ->add('project', 'Project', 'Projects');                  // Custom project post type
+
+// Taxonomies (optional)
+Skin::taxonomies()
+    ->categories(['portfolio'])                                    // Categories for portfolio
+    ->add('skill', 'portfolio', 'Skill', 'Skills')                // Custom skill taxonomy
+    ->add('industry', 'portfolio', 'Industry', 'Industries');     // Custom industry taxonomy
 
 // WordPress features
 Skin::hooks()
@@ -123,6 +134,7 @@ For comprehensive documentation, see the [docs/](docs/) directory:
 
 - [Installation](docs/installation.md) - Setup and configuration
 - [Components](docs/components.md) - Component system and auto-discovery
+- [Custom Post Types & Taxonomies](docs/post-types-taxonomies.md) - CPTs and taxonomies made easy
 - [Tailwind CSS](docs/tailwind.md) - Styling with Tailwind utilities
 - [Modern JavaScript](docs/javascript.md) - React, Vue, and build tools
 - [CLI Commands](docs/cli.md) - WP-CLI commands and deployment
