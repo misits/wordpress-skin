@@ -5,7 +5,18 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss()
+    tailwindcss(),
+    {
+      name: "php",
+      handleHotUpdate({ file, server }) {
+        if (file.endsWith(".php")) {
+          server.ws.send({
+            type: "full-reload",
+            path: "*",
+          });
+        }
+      },
+    },
   ],
   build: {
     outDir: 'dist',

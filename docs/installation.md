@@ -137,7 +137,10 @@ Start the Vite development server with hot module reloading:
 npm run dev
 ```
 
-This starts a dev server at `http://localhost:5173` with automatic CSS injection and JavaScript hot reloading.
+This starts a dev server at `http://localhost:5173` with:
+- Automatic CSS injection
+- JavaScript hot module reloading
+- **PHP file watching** - Browser automatically refreshes when you edit PHP files (components, templates, theme files)
 
 ### 3. Production Build
 

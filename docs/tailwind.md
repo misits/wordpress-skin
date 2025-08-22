@@ -33,7 +33,7 @@ body {
 
 ### Vite Integration
 
-Tailwind CSS v4 is integrated via the `@tailwindcss/vite` plugin:
+Tailwind CSS v4 is integrated via the `@tailwindcss/vite` plugin. The configuration also includes automatic PHP file watching for browser refresh:
 
 ```javascript
 // resources/vite.config.mjs
@@ -42,7 +42,22 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()], // tailwindcss() plugin handles everything
+  plugins: [
+    react(), 
+    tailwindcss(),
+    {
+      // Watch PHP files and reload browser on changes
+      name: "php",
+      handleHotUpdate({ file, server }) {
+        if (file.endsWith(".php")) {
+          server.ws.send({
+            type: "full-reload",
+            path: "*",
+          });
+        }
+      },
+    },
+  ],
   build: {
     outDir: "dist",
     emptyOutDir: true,
