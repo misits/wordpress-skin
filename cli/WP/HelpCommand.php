@@ -1,6 +1,6 @@
 <?php
 
-namespace WPSkin\CLI\WP;
+namespace WordPressSkin\CLI\WP;
 
 use \WP_CLI_Command;
 use \WP_CLI;
@@ -40,46 +40,74 @@ class HelpCommand extends \WP_CLI_Command
         \WP_CLI::line("  wp wpskin:<command> [<args>]");
 
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("DEPLOYMENT COMMANDS:");
-        \WP_CLI::line("  wp wpskin:deploy                       Create production build");
-        \WP_CLI::line("    --output=<directory>                 Output directory for production build");
-        \WP_CLI::line("    --skip-build                         Skip asset building");
-        \WP_CLI::line("    --clean                              Clean output directory before building");
+        \WP_CLI::line(
+            "  wp wpskin:deploy                       Create production build",
+        );
+        \WP_CLI::line(
+            "    --output=<directory>                 Output directory for production build",
+        );
+        \WP_CLI::line(
+            "    --skip-build                         Skip asset building",
+        );
+        \WP_CLI::line(
+            "    --clean                              Clean output directory before building",
+        );
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("ASSET COMMANDS:");
-        \WP_CLI::line("  wp wpskin:build                        Build CSS/JS for production");
-        \WP_CLI::line("    --production                         Build for production (minified)");
-        \WP_CLI::line("  wp wpskin:watch                        Watch and rebuild assets");
+        \WP_CLI::line(
+            "  wp wpskin:build                        Build CSS/JS for production",
+        );
+        \WP_CLI::line(
+            "    --production                         Build for production (minified)",
+        );
+        \WP_CLI::line(
+            "  wp wpskin:watch                        Watch and rebuild assets",
+        );
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("SCAFFOLDING COMMANDS:");
-        \WP_CLI::line("  wp wpskin:component <name>             Create new component");
-        \WP_CLI::line("    --with-scss                          Create SCSS file for component");
-        \WP_CLI::line("    --with-js                            Create JS file for component");
-        \WP_CLI::line("  wp wpskin:layout <name>                Create new layout");
+        \WP_CLI::line(
+            "  wp wpskin:component <name>             Create new component",
+        );
+        \WP_CLI::line(
+            "    --with-scss                          Create SCSS file for component",
+        );
+        \WP_CLI::line(
+            "    --with-js                            Create JS file for component",
+        );
+        \WP_CLI::line(
+            "  wp wpskin:layout <name>                Create new layout",
+        );
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("INFORMATION COMMANDS:");
-        \WP_CLI::line("  wp wpskin:info                         Show WP-Skin information");
-        \WP_CLI::line("  wp wpskin:status                       Check theme status");
+        \WP_CLI::line(
+            "  wp wpskin:info                         Show WP-Skin information",
+        );
+        \WP_CLI::line(
+            "  wp wpskin:status                       Check theme status",
+        );
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("EXAMPLES:");
         \WP_CLI::line("  wp wpskin:deploy --clean");
         \WP_CLI::line("  wp wpskin:component navbar --with-scss --with-js");
         \WP_CLI::line("  wp wpskin:layout homepage");
         \WP_CLI::line("  wp wpskin:build --production");
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("MODE CONFIGURATION:");
         \WP_CLI::line("Set WPSKIN_MODE in your functions.php:");
-        \WP_CLI::line("  define('WPSKIN_MODE', 'theme');   // For theme development (default)");
+        \WP_CLI::line(
+            "  define('WPSKIN_MODE', 'theme');   // For theme development (default)",
+        );
         \WP_CLI::line("");
-        
+
         \WP_CLI::line("VERSION:");
-        if (function_exists('wpskin_version')) {
+        if (function_exists("wpskin_version")) {
             \WP_CLI::line("  WP-Skin: " . wpskin_version());
         }
         \WP_CLI::line("");

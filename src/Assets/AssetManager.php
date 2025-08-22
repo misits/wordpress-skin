@@ -375,10 +375,16 @@ class AssetManager {
      * @return void
      */
     private function loadViteManifest() {
-        $manifestPath = $this->skin->getThemeRoot() . '/resources/dist/manifest.json';
+        $manifestPaths = [
+            $this->skin->getThemeRoot() . '/resources/dist/.vite/manifest.json',
+            $this->skin->getThemeRoot() . '/resources/dist/manifest.json'
+        ];
         
-        if (file_exists($manifestPath)) {
-            $this->viteManifest = json_decode(file_get_contents($manifestPath), true);
+        foreach ($manifestPaths as $manifestPath) {
+            if (file_exists($manifestPath)) {
+                $this->viteManifest = json_decode(file_get_contents($manifestPath), true);
+                break;
+            }
         }
     }
     
@@ -388,17 +394,15 @@ class AssetManager {
      * @return void
      */
     public function enqueueViteAssets() {
-        // Check if Vite config exists
-        $viteConfigPath = $this->skin->getThemeRoot() . '/resources/vite.config.mjs';
-        if (!file_exists($viteConfigPath)) {
-            return;
-        }
-        
-        // In development mode
+        // In development mode (requires vite.config.mjs)
         if ($this->isDevMode()) {
+            $viteConfigPath = $this->skin->getThemeRoot() . '/resources/vite.config.mjs';
+            if (!file_exists($viteConfigPath)) {
+                return;
+            }
             $this->enqueueViteDev();
         } 
-        // In production mode
+        // In production mode (only needs manifest)
         else if ($this->viteManifest) {
             $this->enqueueViteProd();
         }
@@ -465,12 +469,28 @@ class AssetManager {
             return false;
         }
         
-        // Check multiple conditions for dev mode
-        return (
+        // Explicitly check for WPSKIN_DEV first
+        if (defined('WPSKIN_DEV') && WPSKIN_DEV) {
+            return true;
+        }
+        
+        // Only use dev mode if debug is enabled AND dev server is accessible
+        $debugEnabled = (
             (defined('WP_DEBUG') && WP_DEBUG) ||
-            (defined('WPSKIN_DEV') && WPSKIN_DEV) ||
             (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)
         );
+        
+        if ($debugEnabled) {
+            // Check if Vite dev server is actually running
+            $devServerResponse = @wp_remote_get($this->viteDevServer . '/@vite/client', [
+                'timeout' => 1,
+                'sslverify' => false
+            ]);
+            
+            return !is_wp_error($devServerResponse);
+        }
+        
+        return false;
     }
     
     /**

@@ -27,7 +27,7 @@ fi
 
 # Build for production
 echo "🏗️  Building CSS and JS..."
-npm run prod:build
+npm run build
 
 cd ../
 
