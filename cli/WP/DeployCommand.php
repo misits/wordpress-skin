@@ -31,9 +31,9 @@ class DeployCommand
      *
      * ## EXAMPLES
      *
-     *     wp wpskin deploy
-     *     wp wpskin deploy --output=../production-build
-     *     wp wpskin deploy --skip-build --no-clean
+     *     wp borps skin:deploy
+     *     wp borps skin:deploy --output=../production-build
+     *     wp borps skin:deploy --skip-build --no-clean
      *
      * @when after_wp_load
      */

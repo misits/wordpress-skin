@@ -6,7 +6,7 @@ A minimal WordPress theme framework powered by **Tailwind CSS v4** with auto-dis
 
 - 🎨 **Tailwind-First** - Built around Tailwind CSS v4 utilities
 - 🧩 **Auto-Discovery Components** - PHP components automatically registered
-- ⚡ **Modern Build Tools** - Vite with HMR and React/Vue support  
+- ⚡ **Modern Build Tools** - Vite with HMR and React/Vue support
 - 📦 **Zero Configuration** - Convention over configuration
 - 🔧 **Auto-Scaffolding** - Automatic directory structure creation
 - 🚀 **Production Ready** - Built-in deployment and optimization
@@ -116,16 +116,16 @@ console.log('Theme loaded');
 
 ```bash
 # Build and deployment
-wp wpskin:build                     # Build assets
-wp wpskin:build --production        # Build for production
-wp wpskin:deploy                    # Create production theme package
+wp borps skin:build                     # Build assets
+wp borps skin:build --production        # Build for production
+wp borps skin:deploy                    # Create production theme package
 
-# Component scaffolding  
-wp wpskin:component navbar          # Create new component
+# Component scaffolding
+wp borps skin:component navbar          # Create new component
 
 # Theme information
-wp wpskin:info                      # Show theme information
-wp wpskin:status                    # Check theme status
+wp borps skin:info                      # Show theme information
+wp borps skin:status                    # Check theme status
 ```
 
 ## Documentation
@@ -144,7 +144,7 @@ For comprehensive documentation, see the [docs/](docs/) directory:
 
 WP-Skin follows a **Tailwind-first, minimal configuration** approach:
 - Use Tailwind utility classes instead of custom CSS
-- Components auto-discovered, no manual registration  
+- Components auto-discovered, no manual registration
 - Convention over configuration
 - Essential WordPress features only
 

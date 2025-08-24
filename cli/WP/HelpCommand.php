@@ -15,7 +15,7 @@ class HelpCommand extends \WP_CLI_Command
      *
      * ## EXAMPLES
      *
-     *     wp wpskin help
+     *     wp borps skin:help
      *
      * @param array $args
      * @param array $assoc_args
@@ -37,13 +37,13 @@ class HelpCommand extends \WP_CLI_Command
 
         \WP_CLI::line("");
         \WP_CLI::line("USAGE");
-        \WP_CLI::line("  wp wpskin:<command> [<args>]");
+        \WP_CLI::line("  wp borps skin:<command> [<args>]");
 
         \WP_CLI::line("");
 
         \WP_CLI::line("DEPLOYMENT COMMANDS:");
         \WP_CLI::line(
-            "  wp wpskin:deploy                       Create production build",
+            "  wp borps skin:deploy                       Create production build",
         );
         \WP_CLI::line(
             "    --output=<directory>                 Output directory for production build",
@@ -58,19 +58,19 @@ class HelpCommand extends \WP_CLI_Command
 
         \WP_CLI::line("ASSET COMMANDS:");
         \WP_CLI::line(
-            "  wp wpskin:build                        Build CSS/JS for production",
+            "  wp borps skin:build                        Build CSS/JS for production",
         );
         \WP_CLI::line(
             "    --production                         Build for production (minified)",
         );
         \WP_CLI::line(
-            "  wp wpskin:watch                        Watch and rebuild assets",
+            "  wp borps skin:watch                        Watch and rebuild assets",
         );
         \WP_CLI::line("");
 
         \WP_CLI::line("SCAFFOLDING COMMANDS:");
         \WP_CLI::line(
-            "  wp wpskin:component <name>             Create new component",
+            "  wp borps skin:component <name>             Create new component",
         );
         \WP_CLI::line(
             "    --with-scss                          Create SCSS file for component",
@@ -79,24 +79,24 @@ class HelpCommand extends \WP_CLI_Command
             "    --with-js                            Create JS file for component",
         );
         \WP_CLI::line(
-            "  wp wpskin:layout <name>                Create new layout",
+            "  wp borps skin:layout <name>                Create new layout",
         );
         \WP_CLI::line("");
 
         \WP_CLI::line("INFORMATION COMMANDS:");
         \WP_CLI::line(
-            "  wp wpskin:info                         Show WP-Skin information",
+            "  wp borps skin:info                         Show WP-Skin information",
         );
         \WP_CLI::line(
-            "  wp wpskin:status                       Check theme status",
+            "  wp borps skin:status                       Check theme status",
         );
         \WP_CLI::line("");
 
         \WP_CLI::line("EXAMPLES:");
-        \WP_CLI::line("  wp wpskin:deploy --clean");
-        \WP_CLI::line("  wp wpskin:component navbar --with-scss --with-js");
-        \WP_CLI::line("  wp wpskin:layout homepage");
-        \WP_CLI::line("  wp wpskin:build --production");
+        \WP_CLI::line("  wp borps skin:deploy --clean");
+        \WP_CLI::line("  wp borps skin:component navbar --with-scss --with-js");
+        \WP_CLI::line("  wp borps skin:layout homepage");
+        \WP_CLI::line("  wp borps skin:build --production");
         \WP_CLI::line("");
 
         \WP_CLI::line("MODE CONFIGURATION:");

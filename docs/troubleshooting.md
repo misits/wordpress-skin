@@ -33,7 +33,7 @@ Common issues and solutions when working with WP-Skin.
    // In wp-config.php
    define('WP_DEBUG', true);
    define('WP_DEBUG_LOG', true);
-   
+
    // Check wp-content/debug.log for errors
    ```
 
@@ -57,7 +57,7 @@ Common issues and solutions when working with WP-Skin.
 
 3. **Force scaffolding:**
    ```bash
-   wp wpskin:scaffold --force
+   wp borps skin:scaffold --force
    ```
 
 4. **Manual scaffolding if auto-creation fails:**
@@ -76,7 +76,7 @@ Common issues and solutions when working with WP-Skin.
 
 1. **Check Node.js version:**
    ```bash
-   node --version  # Should be 18+ 
+   node --version  # Should be 18+
    npm --version   # Should be 9+
    ```
 
@@ -92,7 +92,7 @@ Common issues and solutions when working with WP-Skin.
    ```bash
    # Kill process using port 5173
    lsof -ti:5173 | xargs kill -9
-   
+
    # Or use different port
    npm run dev -- --port 3000
    ```
@@ -128,7 +128,7 @@ Common issues and solutions when working with WP-Skin.
    ```php
    // In wp-config.php or functions.php
    define('WPSKIN_DEV', true);
-   
+
    // Verify it's set
    wp eval 'var_dump(defined("WPSKIN_DEV") && WPSKIN_DEV);'
    ```
@@ -222,7 +222,7 @@ Common issues and solutions when working with WP-Skin.
    ```css
    /* resources/src/css/app.css */
    @import "tailwindcss";
-   
+
    /* Ensure dynamic classes are preserved */
    .bg-red-500,
    .bg-blue-500,
@@ -237,7 +237,7 @@ Common issues and solutions when working with WP-Skin.
    // Bad - may be purged
    $color = 'red';
    echo "bg-{$color}-500";
-   
+
    // Good - full class name
    $classes = [
      'red' => 'bg-red-500',
@@ -311,7 +311,7 @@ Common issues and solutions when working with WP-Skin.
        'text' => 'Click me',  // Variable name must match
        'type' => 'submit'
    ]);
-   
+
    // In component
    $text = $text ?? 'Default';  // Must use same name
    ```
@@ -465,7 +465,7 @@ Common issues and solutions when working with WP-Skin.
 
 ### Deploy Command Fails
 
-**Problem:** `wp wpskin:deploy` command errors or incomplete deployment.
+**Problem:** `wp borps skin:deploy` command errors or incomplete deployment.
 
 **Solutions:**
 
@@ -537,11 +537,11 @@ When reporting issues, include this information:
 ```bash
 # System information
 wp --info
-wp wpskin:status --detailed
+wp borps skin:status --detailed
 
-# Theme information  
+# Theme information
 wp theme list
-wp wpskin:info
+wp borps skin:info
 
 # Server information
 php -v
@@ -557,7 +557,7 @@ tail -f wp-content/debug.log
 Check these log files for errors:
 
 - `wp-content/debug.log` - WordPress errors
-- `resources/npm-debug.log` - NPM build errors  
+- `resources/npm-debug.log` - NPM build errors
 - Server error logs (location varies by host)
 
 ### Testing Isolation
