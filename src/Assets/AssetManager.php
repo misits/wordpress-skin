@@ -182,6 +182,11 @@ class AssetManager {
             return;
         }
         
+        // Skip theme assets if we're on wp-board pages
+        if ($this->isWpBoardPage()) {
+            return;
+        }
+        
         // Enqueue CSS files
         foreach ($this->assets['css'] as $handle => $asset) {
             if ($asset['src']) {
@@ -204,6 +209,11 @@ class AssetManager {
      */
     public function outputFonts(): void {
         if (empty($this->assets['fonts'])) {
+            return;
+        }
+        
+        // Skip theme fonts if we're on wp-board pages
+        if ($this->isWpBoardPage()) {
             return;
         }
         
@@ -394,6 +404,11 @@ class AssetManager {
      * @return void
      */
     public function enqueueViteAssets() {
+        // Skip Vite assets if we're on wp-board pages
+        if ($this->isWpBoardPage()) {
+            return;
+        }
+        
         // In development mode (requires vite.config.mjs)
         if ($this->isDevMode()) {
             $viteConfigPath = $this->skin->getThemeRoot() . '/resources/vite.config.mjs';
@@ -502,5 +517,31 @@ class AssetManager {
     public function setViteDevServer($url) {
         $this->viteDevServer = rtrim($url, '/');
         return $this;
+    }
+    
+    /**
+     * Check if we're currently on a wp-board page
+     * 
+     * @return bool
+     */
+    private function isWpBoardPage() {
+        // Check if we're in a wp-board context
+        if (get_query_var('wpboard')) {
+            return true;
+        }
+        
+        // Check URL path for wp-board
+        $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+        if (strpos($request_uri, '/wp-board') !== false) {
+            return true;
+        }
+        
+        // Check if wp-board virtual page is active (additional safety check)
+        global $wp;
+        if (isset($wp->query_vars['wpboard'])) {
+            return true;
+        }
+        
+        return false;
     }
 }
