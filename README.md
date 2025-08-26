@@ -136,6 +136,8 @@ For comprehensive documentation, see the [docs/](docs/) directory:
 
 - [Installation](docs/installation.md) - Setup and configuration
 - [Components](docs/components.md) - Component system and auto-discovery
+- [Query Builder](docs/query-builder.md) - Eloquent-style database queries
+- [Post Wrapper](docs/post-wrapper.md) - Object-oriented post interface
 - [Customizer](docs/customizer.md) - WordPress Customizer integration with fluent API
 - [Security](docs/security.md) - WordPress security hardening features
 - [Custom Post Types & Taxonomies](docs/post-types-taxonomies.md) - CPTs and taxonomies made easy

@@ -244,4 +244,53 @@ class Skin {
         
         return true;
     }
+    
+    /**
+     * Create a new query builder for posts
+     * 
+     * @return \WordPressSkin\Query\QueryBuilder
+     */
+    public static function query() {
+        return new \WordPressSkin\Query\QueryBuilder();
+    }
+    
+    /**
+     * Create a new query builder for users
+     * 
+     * @return \WordPressSkin\Query\UserQueryBuilder
+     */
+    public static function users() {
+        return new \WordPressSkin\Query\UserQueryBuilder();
+    }
+    
+    /**
+     * Get current post/page context
+     * 
+     * @param callable|null $callback Optional callback to transform the post
+     * @return \WordPressSkin\PostTypes\PostType|mixed|null
+     */
+    public static function current(?callable $callback = null) {
+        wp_reset_query();
+        
+        // Get the queried object (post, page, etc.)
+        $queriedObject = get_queried_object();
+        
+        if (!$queriedObject || !($queriedObject instanceof \WP_Post)) {
+            return null;
+        }
+        
+        $postType = new \WordPressSkin\PostTypes\PostType($queriedObject);
+        
+        return $callback ? $callback($postType) : $postType;
+    }
+    
+    /**
+     * Create a PostType instance
+     * 
+     * @param int|\WP_Post|null $post Post ID, WP_Post object, or null for current
+     * @return \WordPressSkin\PostTypes\PostType
+     */
+    public static function post($post = null) {
+        return new \WordPressSkin\PostTypes\PostType($post);
+    }
 }
