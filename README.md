@@ -9,6 +9,8 @@ A minimal WordPress theme framework powered by **Tailwind CSS v4** with auto-dis
 - ⚡ **Modern Build Tools** - Vite with HMR and React/Vue support
 - 📦 **Zero Configuration** - Convention over configuration
 - 🔧 **Auto-Scaffolding** - Automatic directory structure creation
+- 🎛️ **Fluent Customizer API** - Modern WordPress Customizer integration
+- 🔒 **Security Hardening** - Built-in WordPress security features
 - 🚀 **Production Ready** - Built-in deployment and optimization
 - 🎛️ **Essential WordPress** - Only necessary WordPress features
 
@@ -134,6 +136,8 @@ For comprehensive documentation, see the [docs/](docs/) directory:
 
 - [Installation](docs/installation.md) - Setup and configuration
 - [Components](docs/components.md) - Component system and auto-discovery
+- [Customizer](docs/customizer.md) - WordPress Customizer integration with fluent API
+- [Security](docs/security.md) - WordPress security hardening features
 - [Custom Post Types & Taxonomies](docs/post-types-taxonomies.md) - CPTs and taxonomies made easy
 - [Tailwind CSS](docs/tailwind.md) - Styling with Tailwind utilities
 - [Modern JavaScript](docs/javascript.md) - React, Vue, and build tools

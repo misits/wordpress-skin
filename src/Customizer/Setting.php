@@ -83,6 +83,20 @@ class Setting {
     private $inputAttrs = [];
     
     /**
+     * Setting capability
+     * 
+     * @var string
+     */
+    private $capability = 'edit_theme_options';
+    
+    /**
+     * Setting type
+     * 
+     * @var string
+     */
+    private $settingType = 'theme_mod';
+    
+    /**
      * Constructor
      * 
      * @param string $fullId Full setting ID
@@ -174,6 +188,28 @@ class Setting {
     }
     
     /**
+     * Set setting capability
+     * 
+     * @param string $capability
+     * @return self
+     */
+    public function capability($capability) {
+        $this->capability = $capability;
+        return $this;
+    }
+    
+    /**
+     * Set setting type ('theme_mod' or 'option')
+     * 
+     * @param string $type
+     * @return self
+     */
+    public function type($type) {
+        $this->settingType = $type;
+        return $this;
+    }
+    
+    /**
      * Register setting and control with WordPress Customizer
      * 
      * @param \WP_Customize_Manager $wp_customize
@@ -186,6 +222,8 @@ class Setting {
             'default' => $this->default,
             'transport' => $this->transport,
             'sanitize_callback' => $this->getSanitizeCallback(),
+            'capability' => $this->capability,
+            'type' => $this->settingType,
         ]);
         
         // Add control
@@ -223,6 +261,37 @@ class Setting {
                 ));
                 break;
                 
+            case 'image':
+                $wp_customize->add_control(new \WP_Customize_Image_Control(
+                    $wp_customize,
+                    $this->fullId,
+                    $controlArgs
+                ));
+                break;
+                
+            case 'upload':
+                $wp_customize->add_control(new \WP_Customize_Upload_Control(
+                    $wp_customize,
+                    $this->fullId,
+                    $controlArgs
+                ));
+                break;
+                
+            case 'radio':
+            case 'select':
+            case 'dropdown-pages':
+            case 'checkbox':
+            case 'text':
+            case 'textarea':
+            case 'email':
+            case 'url':
+            case 'number':
+            case 'range':
+            case 'date':
+            case 'tel':
+                $wp_customize->add_control($this->fullId, $controlArgs);
+                break;
+                
             default:
                 $wp_customize->add_control($this->fullId, $controlArgs);
                 break;
@@ -245,9 +314,27 @@ class Setting {
             case 'checkbox':
                 return function($value) { return $value ? 1 : 0; };
             case 'number':
+            case 'range':
                 return 'absint';
             case 'textarea':
                 return 'wp_kses_post';
+            case 'radio':
+            case 'select':
+                return function($value) {
+                    return array_key_exists($value, $this->choices) ? $value : '';
+                };
+            case 'dropdown-pages':
+                return 'absint';
+            case 'image':
+            case 'upload':
+            case 'media':
+                return 'esc_url_raw';
+            case 'tel':
+                return 'sanitize_text_field';
+            case 'date':
+                return function($value) {
+                    return date('Y-m-d', strtotime($value));
+                };
             default:
                 return 'sanitize_text_field';
         }

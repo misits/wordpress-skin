@@ -44,29 +44,9 @@ Prevents unauthorized directory listing when no index file is present.
 $skin->disableDirectoryBrowsing();
 ```
 
-### 3. Hide Login Page
+### 3. Auto Logout Idle Users
 
-Obscures the default WordPress login page to prevent brute force attacks.
-
-**What it does:**
-- Creates custom login URL with secret slug
-- Blocks access to `/wp-login.php`
-- Redirects unauthorized login attempts to 404
-
-**Usage:**
-```php
-// Default custom slug
-$skin->hideLoginPage();
-
-// Custom slug
-$skin->hideLoginPage('my-secret-admin');
-
-// Get the custom login URL
-$login_url = $skin->getCustomLoginUrl();
-// Result: https://yoursite.com/?my-secret-admin=1
-```
-
-### 4. Auto Logout Idle Users
+**Note:** Login page hiding functionality has been removed from WP-Skin. Use dedicated plugins like **WPS Hide Login** for login protection instead.
 
 Automatically logs out users after a period of inactivity.
 
@@ -109,11 +89,9 @@ For fine-grained control, use the `configureSecurity()` method:
 $skin->configureSecurity([
     'remove_wp_version' => true,
     'disable_directory_browsing' => true,
-    'hide_login_page' => true,
     'auto_logout_idle_users' => true,
-    'disable_xmlrpc' => true,
-    'idle_timeout' => 45, // minutes
-    'custom_login_slug' => 'admin-portal'
+    'disable_xmlrpc' => false, // Default: enabled
+    'idle_timeout' => 45 // minutes
 ]);
 ```
 
@@ -123,11 +101,9 @@ $skin->configureSecurity([
 |--------|------|---------|-------------|
 | `remove_wp_version` | boolean | `true` | Remove WordPress version info |
 | `disable_directory_browsing` | boolean | `true` | Disable directory listing |
-| `hide_login_page` | boolean | `false` | Hide default login page |
 | `auto_logout_idle_users` | boolean | `false` | Enable auto logout |
-| `disable_xmlrpc` | boolean | `true` | Disable XML-RPC |
-| `idle_timeout` | integer | `30` | Idle timeout in minutes |
-| `custom_login_slug` | string | `'secure-login'` | Custom login URL slug |
+| `disable_xmlrpc` | boolean | `false` | Disable XML-RPC (enable/disable dynamically) |
+| `idle_timeout` | integer | `60` | Idle timeout in minutes |
 
 ## Production Setup
 
@@ -142,11 +118,9 @@ add_action('after_setup_theme', function() {
     $skin->configureSecurity([
         'remove_wp_version' => true,           // Hide version info
         'disable_directory_browsing' => true, // Prevent directory listing
-        'hide_login_page' => true,            // Hide wp-login.php
         'auto_logout_idle_users' => true,     // Auto logout after inactivity
-        'disable_xmlrpc' => true,             // Disable XML-RPC
-        'idle_timeout' => 30,                 // 30 minutes timeout
-        'custom_login_slug' => 'secure-admin' // Custom admin URL
+        'disable_xmlrpc' => false,            // Enable XML-RPC (default)
+        'idle_timeout' => 60                  // 60 minutes timeout
     ]);
 });
 ```
@@ -165,22 +139,11 @@ $security->updateConfig(['idle_timeout' => 60]);
 // Get current config
 $config = $security->getConfig();
 
-// Get custom login URL
-$login_url = $security->getCustomLoginUrl();
 ```
 
 ## Security Best Practices
 
-### 1. Use Strong Custom Login Slugs
-- Avoid predictable slugs like 'admin', 'login', 'secure'
-- Use a combination of letters and numbers
-- Keep it memorable but not guessable
-
-```php
-$skin->hideLoginPage('x9k2m7admin2024');
-```
-
-### 2. Set Appropriate Timeout Values
+### 1. Set Appropriate Timeout Values
 - Balance security with user experience
 - Consider your users' typical session lengths
 - Shorter timeouts for high-security sites
@@ -196,26 +159,16 @@ $skin->autoLogoutIdleUsers(30);
 $skin->autoLogoutIdleUsers(60);
 ```
 
-### 3. Monitor Failed Login Attempts
-While WP-Skin handles basic login security, consider additional plugins for:
-- Login attempt limiting
-- IP blocking
-- Two-factor authentication
+### 2. Use Login Security Plugins
+For advanced login protection, consider dedicated plugins like:
+- **WPS Hide Login** - Hide login page URL
+- **Wordfence** - Login attempt limiting and IP blocking  
+- **Two-Factor Authentication** plugins
 
-### 4. Regular Updates
+### 3. Regular Updates
 Keep WordPress core, themes, and plugins updated alongside security configurations.
 
 ## Troubleshooting
-
-### Login Page Issues
-
-**Problem:** Can't access login page after hiding it.
-
-**Solution:** Access your custom URL or disable the feature:
-```php
-// Temporarily disable
-$skin->configureSecurity(['hide_login_page' => false]);
-```
 
 ### Auto Logout Too Aggressive
 
@@ -245,7 +198,7 @@ Use this checklist to ensure comprehensive security:
 
 - [ ] WordPress version hidden
 - [ ] Directory browsing disabled
-- [ ] Custom login URL configured
+- [ ] Login security plugin installed (e.g., WPS Hide Login)
 - [ ] Auto logout enabled with appropriate timeout
 - [ ] XML-RPC disabled
 - [ ] Strong passwords for all users
@@ -278,8 +231,8 @@ $security = Skin::security();
 $config = $security->getConfig();
 
 // Add custom logic based on current config
-if ($config['hide_login_page']) {
-    // Custom login page styling
-    add_action('login_head', 'custom_login_styles');
+if ($config['auto_logout_idle_users']) {
+    // Show logout warning to users
+    add_action('wp_footer', 'show_session_timeout_warning');
 }
 ```
