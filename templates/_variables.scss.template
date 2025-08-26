@@ -1,6 +1,1 @@
 // {{THEME_NAME}} SCSS Variables
-// Keep minimal - use Tailwind's design tokens instead
-
-// Only add variables for values not covered by Tailwind
-$brand-primary: theme('colors.blue.600');
-$brand-secondary: theme('colors.gray.600');

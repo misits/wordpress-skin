@@ -158,6 +158,16 @@ function wpskin_get_starter_css()
 }
 
 /**
+ * Get starter app.css template
+ */
+function wpskin_get_starter_app_css()
+{
+    return wpskin_load_template("app.css", [
+        "THEME_NAME" => wp_get_theme()->get("Name"),
+    ]);
+}
+
+/**
  * Get starter JS template
  */
 function wpskin_get_starter_js()
@@ -488,8 +498,7 @@ function wpskin_create_remaining_starter_files($resources_path)
         "/src/scss/_variables.scss" => wpskin_get_starter_scss_variables(),
 
         // CSS output (compiled from SCSS)
-        "/src/css/app.css" =>
-            "/* Compiled CSS will be generated here by build tools */",
+        "/src/css/app.css" => wpskin_get_starter_app_css(),
 
         // Build tool configs
         "/package.json" => wpskin_get_starter_package_json(),

@@ -1,11 +1,1 @@
 // {{THEME_NAME}} Main SCSS
-// Tailwind CSS
-@import "tailwindcss";
-
-// Listen to changes in the Tailwind CSS source files in the parent directory
-@source "../../../";
-
-// Custom styles (keep minimal - use Tailwind utilities instead)
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-}

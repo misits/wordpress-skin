@@ -1,77 +1,18 @@
 <?php
 /**
  * Front Page Template
- * 
+ *
  * The main entry page for {{THEME_NAME}}
  */
 
 get_header(); ?>
 
 <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                <?php bloginfo('name'); ?>
-            </h1>
-            <?php if (get_bloginfo('description')): ?>
-                <p class="text-xl md:text-2xl opacity-90 mb-8">
-                    <?php bloginfo('description'); ?>
-                </p>
-            <?php endif; ?>
-            <a href="#content" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Get Started
-            </a>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <main id="content" class="max-w-7xl mx-auto px-4 py-16">
-        <?php if (have_posts()): ?>
-            
-            <?php while (have_posts()): the_post(); ?>
-                <div class="prose prose-lg max-w-none">
-                    <?php the_content(); ?>
-                </div>
-            <?php endwhile; ?>
-            
-        <?php else: ?>
-            
-            <!-- Default Content -->
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Fast & Modern</h3>
-                    <p class="text-gray-600">Built with Tailwind CSS and modern development tools.</p>
-                </div>
-                
-                <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m2 0h2M7 7h2m6 0h2M7 11h2m6 0h2"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Component-Based</h3>
-                    <p class="text-gray-600">Reusable components with auto-discovery system.</p>
-                </div>
-                
-                <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Developer Friendly</h3>
-                    <p class="text-gray-600">Clean code architecture with WP-Skin framework.</p>
-                </div>
-            </div>
-            
-        <?php endif; ?>
+    <main class="container mx-auto py-8">
+        <!-- Your content goes here -->
+        <h1 class="text-3xl font-bold mb-4">Welcome to {{THEME_NAME}}</h1>
+        <p class="text-lg mb-8">This is the front page of {{THEME_NAME}}.</p>
+        <p class="text-lg mb-8">You can customize this page by editing the <code>front-page.php</code> file in the <code>root</code> directory.</p>
     </main>
 </div>
 

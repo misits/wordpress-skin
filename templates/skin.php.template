@@ -102,12 +102,12 @@ Skin::taxonomies()
 */
 
 // WordPress Security Configuration
-        Skin::getInstance()->configureSecurity([
-        'remove_wp_version' => true,           // Hide WordPress version
-        'disable_directory_browsing' => true, // Prevent directory listing
-        'auto_logout_idle_users' => false,    // Set to true for production
-        'disable_xmlrpc' => true,             // Disable XML-RPC
-        'idle_timeout' => 60,                 // 60 minutes timeout
+Skin::getInstance()->configureSecurity([
+    'remove_wp_version' => true,           // Hide WordPress version
+    'disable_directory_browsing' => true, // Prevent directory listing
+    'auto_logout_idle_users' => false,    // Set to true for production
+    'disable_xmlrpc' => true,             // Disable XML-RPC
+    'idle_timeout' => 60,                 // 60 minutes timeout
 ]);
 
 Skin::hooks()
