@@ -23,10 +23,17 @@ class SecurityManager {
         'disable_directory_browsing' => true,
         'hide_login_page' => false,
         'auto_logout_idle_users' => false,
-        'disable_xmlrpc' => true,
+        'disable_xmlrpc' => false, // Changed default to false (enabled)
         'idle_timeout' => 30, // minutes
         'custom_login_slug' => 'secure-login'
     ];
+    
+    /**
+     * Track which security features are currently active
+     * 
+     * @var array
+     */
+    private $activeFeatures = [];
     
     /**
      * Constructor
@@ -44,24 +51,47 @@ class SecurityManager {
      * @return void
      */
     private function init(): void {
-        if ($this->config['remove_wp_version']) {
+        // Handle WP version removal
+        if ($this->config['remove_wp_version'] && !in_array('remove_wp_version', $this->activeFeatures)) {
             $this->removeWpVersion();
+            $this->activeFeatures[] = 'remove_wp_version';
+        } elseif (!$this->config['remove_wp_version'] && in_array('remove_wp_version', $this->activeFeatures)) {
+            $this->restoreWpVersion();
+            $this->activeFeatures = array_diff($this->activeFeatures, ['remove_wp_version']);
         }
         
-        if ($this->config['disable_directory_browsing']) {
+        // Handle directory browsing
+        if ($this->config['disable_directory_browsing'] && !in_array('disable_directory_browsing', $this->activeFeatures)) {
             $this->disableDirectoryBrowsing();
+            $this->activeFeatures[] = 'disable_directory_browsing';
         }
+        // Note: Directory browsing can't be easily re-enabled without .htaccess modification
         
-        if ($this->config['hide_login_page']) {
+        // Handle login page hiding
+        if ($this->config['hide_login_page'] && !in_array('hide_login_page', $this->activeFeatures)) {
             $this->hideLoginPage();
+            $this->activeFeatures[] = 'hide_login_page';
+        } elseif (!$this->config['hide_login_page'] && in_array('hide_login_page', $this->activeFeatures)) {
+            $this->restoreLoginPage();
+            $this->activeFeatures = array_diff($this->activeFeatures, ['hide_login_page']);
         }
         
-        if ($this->config['auto_logout_idle_users']) {
+        // Handle auto logout
+        if ($this->config['auto_logout_idle_users'] && !in_array('auto_logout_idle_users', $this->activeFeatures)) {
             $this->autoLogoutIdleUsers();
+            $this->activeFeatures[] = 'auto_logout_idle_users';
+        } elseif (!$this->config['auto_logout_idle_users'] && in_array('auto_logout_idle_users', $this->activeFeatures)) {
+            $this->disableAutoLogout();
+            $this->activeFeatures = array_diff($this->activeFeatures, ['auto_logout_idle_users']);
         }
         
-        if ($this->config['disable_xmlrpc']) {
+        // Handle XML-RPC
+        if ($this->config['disable_xmlrpc'] && !in_array('disable_xmlrpc', $this->activeFeatures)) {
             $this->disableXmlRpc();
+            $this->activeFeatures[] = 'disable_xmlrpc';
+        } elseif (!$this->config['disable_xmlrpc'] && in_array('disable_xmlrpc', $this->activeFeatures)) {
+            $this->enableXmlRpc();
+            $this->activeFeatures = array_diff($this->activeFeatures, ['disable_xmlrpc']);
         }
     }
     
@@ -204,13 +234,8 @@ class SecurityManager {
         // Remove Windows Live Writer manifest link
         remove_action('wp_head', 'wlwmanifest_link');
         
-        // Block XML-RPC requests
-        add_action('init', function() {
-            if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'xmlrpc.php') !== false) {
-                http_response_code(403);
-                exit('XML-RPC is disabled for security reasons.');
-            }
-        });
+        // Block XML-RPC requests (using dynamic check)
+        add_action('init', [$this, 'blockXmlRpcRequests']);
         
         // Add X-Pingback header removal
         add_filter('wp_headers', [$this, 'removePingbackHeader']);
@@ -226,8 +251,26 @@ class SecurityManager {
      * @return array
      */
     public function removePingbackHeader(array $headers): array {
-        unset($headers['X-Pingback']);
+        // Only remove header if XML-RPC is disabled
+        if ($this->config['disable_xmlrpc']) {
+            unset($headers['X-Pingback']);
+        }
         return $headers;
+    }
+    
+    /**
+     * Block XML-RPC requests dynamically
+     * 
+     * @return void
+     */
+    public function blockXmlRpcRequests(): void {
+        // Only block if XML-RPC is disabled in config
+        if ($this->config['disable_xmlrpc'] && 
+            isset($_SERVER['REQUEST_URI']) && 
+            strpos($_SERVER['REQUEST_URI'], 'xmlrpc.php') !== false) {
+            http_response_code(403);
+            exit('XML-RPC is disabled for security reasons.');
+        }
     }
     
     /**
@@ -237,9 +280,82 @@ class SecurityManager {
      * @return array
      */
     public function removeXmlrpcMethods(array $methods): array {
-        unset($methods['pingback.ping']);
-        unset($methods['pingback.extensions.getPingbacks']);
+        // Only remove methods if XML-RPC is disabled
+        if ($this->config['disable_xmlrpc']) {
+            unset($methods['pingback.ping']);
+            unset($methods['pingback.extensions.getPingbacks']);
+        }
         return $methods;
+    }
+    
+    /**
+     * Re-enable XML-RPC functionality
+     * 
+     * @return void
+     */
+    private function enableXmlRpc(): void {
+        // Remove XML-RPC disabling filter
+        remove_filter('xmlrpc_enabled', '__return_false');
+        
+        // Re-add RSD link (only if not already added)
+        if (!has_action('wp_head', 'rsd_link')) {
+            add_action('wp_head', 'rsd_link');
+        }
+        
+        // Re-add Windows Live Writer manifest link (only if not already added)
+        if (!has_action('wp_head', 'wlwmanifest_link')) {
+            add_action('wp_head', 'wlwmanifest_link');
+        }
+        
+        // Remove pingback header filter
+        remove_filter('wp_headers', [$this, 'removePingbackHeader']);
+        
+        // The blockXmlRpcRequests method will automatically allow requests
+        // based on the config['disable_xmlrpc'] setting
+        
+        // Note: xmlrpc_methods filter will automatically restore methods
+        // based on the config check in removeXmlrpcMethods
+    }
+    
+    /**
+     * Restore WordPress version display
+     * 
+     * @return void
+     */
+    private function restoreWpVersion(): void {
+        // Re-add version to head
+        add_action('wp_head', 'wp_generator');
+        
+        // Remove the filter that removes version from RSS feeds
+        remove_filter('the_generator', '__return_empty_string');
+        
+        // Remove version removal from scripts and styles
+        remove_filter('style_loader_src', [$this, 'removeVersionFromAssets']);
+        remove_filter('script_loader_src', [$this, 'removeVersionFromAssets']);
+        
+        // Remove admin footer filter
+        remove_filter('update_footer', '__return_empty_string', 11);
+    }
+    
+    /**
+     * Restore login page access
+     * 
+     * @return void
+     */
+    private function restoreLoginPage(): void {
+        // Login hiding functionality is currently disabled
+        // This method is kept for future use when login hiding is re-enabled
+    }
+    
+    /**
+     * Disable auto-logout functionality
+     * 
+     * @return void
+     */
+    private function disableAutoLogout(): void {
+        remove_action('init', [$this, 'checkUserIdleTime']);
+        remove_action('wp_login', [$this, 'setUserLastActivity']);
+        remove_action('wp_loaded', [$this, 'updateUserActivity']);
     }
     
     /**

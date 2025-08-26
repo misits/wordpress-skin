@@ -105,8 +105,8 @@ Skin::taxonomies()
 Skin::getInstance()->configureSecurity([
     'remove_wp_version' => true,           // Hide WordPress version
     'disable_directory_browsing' => true, // Prevent directory listing
-    'auto_logout_idle_users' => false,    // Set to true for production
     'disable_xmlrpc' => true,             // Disable XML-RPC
+    'auto_logout_idle_users' => false,    // Set to true for production
     'idle_timeout' => 60,                 // 60 minutes timeout
 ]);
 
