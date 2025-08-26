@@ -1,9 +1,9 @@
 <?php
 /**
  * {{THEME_NAME}} - WP-Skin Configuration
- * 
+ *
  * Minimal WordPress theme powered by WP-Skin and Tailwind CSS
- * 
+ *
  * @package {{THEME_NAME}}
  */
 
@@ -34,7 +34,7 @@ Skin::assets()
 Skin::customizer('theme_options', function($section) {
     $section->title('Theme Options')
             ->description('Basic theme customization');
-    
+
     $section->setting('primary_color')
             ->label('Primary Color')
             ->control('color')
@@ -64,7 +64,7 @@ Skin::postTypes()
         'menu_icon' => 'dashicons-portfolio',
         'supports' => ['title', 'editor', 'thumbnail', 'excerpt']
     ])
-    ->add('service', 'Service', 'Services', [                 // Services post type 
+    ->add('service', 'Service', 'Services', [                 // Services post type
         'menu_icon' => 'dashicons-admin-tools',
         'supports' => ['title', 'editor', 'thumbnail', 'excerpt']
     ])
@@ -76,7 +76,7 @@ Skin::postTypes()
 
 /*
 |--------------------------------------------------------------------------
-| Taxonomies (Optional)  
+| Taxonomies (Optional)
 |--------------------------------------------------------------------------
 | Register taxonomies for your custom post types
 */
@@ -101,13 +101,22 @@ Skin::taxonomies()
 | Add theme-specific WordPress actions and filters
 */
 
+// WordPress Security Configuration
+        Skin::getInstance()->configureSecurity([
+        'remove_wp_version' => true,           // Hide WordPress version
+        'disable_directory_browsing' => true, // Prevent directory listing
+        'auto_logout_idle_users' => false,    // Set to true for production
+        'disable_xmlrpc' => true,             // Disable XML-RPC
+        'idle_timeout' => 60,                 // 60 minutes timeout
+]);
+
 Skin::hooks()
     ->action('after_setup_theme', function() {
         // Essential WordPress theme features
         add_theme_support('post-thumbnails');
         add_theme_support('title-tag');
         add_theme_support('html5', ['search-form', 'comment-form', 'comment-list']);
-        
+
         // Register navigation menus
         register_nav_menus([
             'primary' => 'Primary Navigation'
@@ -145,7 +154,24 @@ if (container) {
 
 /*
 |--------------------------------------------------------------------------
-| That's it! 
+| WordPress Security (Production Setup)
+|--------------------------------------------------------------------------
+| For production, enable additional security features:
+
+// Skin::getInstance()->enableAllSecurity(); // Enable all security features
+//
+// Or configure individually:
+// Skin::getInstance()
+//     ->hideLoginPage('my-secret-admin')
+//     ->autoLogoutIdleUsers(15)
+//     ->enableAllSecurity();
+//
+// Custom login URL will be: yoursite.com/?my-secret-admin=1
+*/
+
+/*
+|--------------------------------------------------------------------------
+| That's it!
 |--------------------------------------------------------------------------
 | Your theme is ready. Create components in resources/components/
 | and use Tailwind utilities for styling.

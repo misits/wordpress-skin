@@ -16,6 +16,7 @@ use WordPressSkin\Traits\HandlesLayouts;
 use WordPressSkin\Traits\HandlesComponents;
 use WordPressSkin\Traits\HandlesPostTypes;
 use WordPressSkin\Traits\HandlesTaxonomies;
+use WordPressSkin\Traits\HandlesSecurity;
 
 defined('ABSPATH') or exit;
 
@@ -27,6 +28,7 @@ class Skin {
     use HandlesComponents;
     use HandlesPostTypes;
     use HandlesTaxonomies;
+    use HandlesSecurity;
     
     /**
      * Singleton instance
@@ -152,6 +154,15 @@ class Skin {
     }
     
     /**
+     * Static method to access security functionality
+     * 
+     * @return \WordPressSkin\Security\SecurityManager
+     */
+    public static function security() {
+        return self::getInstance()->getSecurityManager();
+    }
+    
+    /**
      * Get theme root directory
      * 
      * @return string
@@ -191,6 +202,7 @@ class Skin {
         $this->initializeComponents();
         $this->initializePostTypes();
         $this->initializeTaxonomies();
+        $this->initializeSecurity();
     }
     
     /**
