@@ -66,3 +66,6 @@ wp-content/debug.log
 
 # Deployment builds
 *-production/
+
+# Libraries
+vendor/
