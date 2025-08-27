@@ -74,19 +74,6 @@ trait HandlesSecurity {
         return $this->configureSecurity(['disable_directory_browsing' => true]);
     }
     
-    /**
-     * Hide login page with custom slug
-     * 
-     * @param string|null $slug Custom login slug
-     * @return self
-     */
-    public function hideLoginPage(string $slug = null): self {
-        $config = ['hide_login_page' => true];
-        if ($slug !== null) {
-            $config['custom_login_slug'] = $slug;
-        }
-        return $this->configureSecurity($config);
-    }
     
     /**
      * Enable automatic logout for idle users
@@ -128,7 +115,6 @@ trait HandlesSecurity {
         return $this->configureSecurity([
             'remove_wp_version' => true,
             'disable_directory_browsing' => true,
-            'hide_login_page' => true,
             'auto_logout_idle_users' => true,
             'disable_xmlrpc' => true,
             'idle_timeout' => 30
