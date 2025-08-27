@@ -118,16 +118,16 @@ console.log('Theme loaded');
 
 ```bash
 # Build and deployment
-wp borps skin:build                     # Build assets
-wp borps skin:build --production        # Build for production
-wp borps skin:deploy                    # Create production theme package
+wp skin:build                     # Build assets
+wp skin:build --production        # Build for production
+wp skin:deploy                    # Create production theme package
 
 # Component scaffolding
-wp borps skin:component navbar          # Create new component
+wp skin:component navbar          # Create new component
 
 # Theme information
-wp borps skin:info                      # Show theme information
-wp borps skin:status                    # Check theme status
+wp skin:info                      # Show theme information
+wp skin:status                    # Check theme status
 ```
 
 ## Documentation

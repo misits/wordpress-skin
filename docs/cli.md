@@ -6,19 +6,19 @@ WP-Skin provides a comprehensive set of WP-CLI commands for building assets, man
 
 ### Build Commands
 
-#### `wp borps skin:build`
+#### `wp skin:build`
 
 Builds assets for production or development.
 
 ```bash
 # Build for development
-wp borps skin:build
+wp skin:build
 
 # Build for production
-wp borps skin:build --production
+wp skin:build --production
 
 # Build with specific environment
-wp borps skin:build --env=staging
+wp skin:build --env=staging
 ```
 
 **Options:**
@@ -29,45 +29,45 @@ wp borps skin:build --env=staging
 **Examples:**
 ```bash
 # Development build with file watching
-wp borps skin:build --watch
+wp skin:build --watch
 
 # Production build with minification
-wp borps skin:build --production
+wp skin:build --production
 
 # Staging build
-wp borps skin:build --env=staging
+wp skin:build --env=staging
 ```
 
-#### `wp borps skin:clean`
+#### `wp skin:clean`
 
 Cleans build artifacts and temporary files.
 
 ```bash
 # Clean all build files
-wp borps skin:clean
+wp skin:clean
 
 # Clean only CSS files
-wp borps skin:clean --css
+wp skin:clean --css
 
 # Clean only JavaScript files
-wp borps skin:clean --js
+wp skin:clean --js
 ```
 
 ### Component Commands
 
-#### `wp borps skin:component`
+#### `wp skin:component`
 
 Creates new components with scaffolded templates.
 
 ```bash
 # Create a basic component
-wp borps skin:component button
+wp skin:component button
 
 # Create a component in a subdirectory
-wp borps skin:component navigation/menu
+wp skin:component navigation/menu
 
 # Create a component with specific template
-wp borps skin:component card --template=advanced
+wp skin:component card --template=advanced
 ```
 
 **Options:**
@@ -79,7 +79,7 @@ wp borps skin:component card --template=advanced
 
 **Basic Component:**
 ```bash
-wp borps skin:component hero --template=basic
+wp skin:component hero --template=basic
 ```
 
 Creates:
@@ -107,55 +107,55 @@ $background = $background ?? 'bg-blue-500';
 
 **Advanced Component:**
 ```bash
-wp borps skin:component post-grid --template=advanced
+wp skin:component post-grid --template=advanced
 ```
 
 Creates a more complex component with data handling, pagination, and filtering.
 
 **Form Component:**
 ```bash
-wp borps skin:component contact-form --template=form
+wp skin:component contact-form --template=form
 ```
 
 Creates a complete form with validation, nonce handling, and AJAX submission.
 
 **Layout Component:**
 ```bash
-wp borps skin:component page-header --template=layout
+wp skin:component page-header --template=layout
 ```
 
 Creates a layout component with flexible positioning and responsive design.
 
-#### `wp borps skin:list-components`
+#### `wp skin:list-components`
 
 Lists all available components.
 
 ```bash
 # List all components
-wp borps skin:list-components
+wp skin:list-components
 
 # List components in specific directory
-wp borps skin:list-components --path=forms
+wp skin:list-components --path=forms
 
 # Show component details
-wp borps skin:list-components --details
+wp skin:list-components --details
 ```
 
 ### Deployment Commands
 
-#### `wp borps skin:deploy`
+#### `wp skin:deploy`
 
 Creates a production-ready theme package for deployment.
 
 ```bash
 # Create deployment package
-wp borps skin:deploy
+wp skin:deploy
 
 # Deploy to specific directory
-wp borps skin:deploy --output=/path/to/deploy
+wp skin:deploy --output=/path/to/deploy
 
 # Create deployment with custom exclusions
-wp borps skin:deploy --exclude=logs,temp
+wp skin:deploy --exclude=logs,temp
 ```
 
 **Options:**
@@ -191,19 +191,19 @@ temp/
 
 ### Information Commands
 
-#### `wp borps skin:info`
+#### `wp skin:info`
 
 Shows theme information and status.
 
 ```bash
 # Show basic theme info
-wp borps skin:info
+wp skin:info
 
 # Show detailed information
-wp borps skin:info --detailed
+wp skin:info --detailed
 
 # Show build status
-wp borps skin:info --build-status
+wp skin:info --build-status
 ```
 
 **Output:**
@@ -230,19 +230,19 @@ File Structure:
 ✓ resources/components/ (12 components)
 ```
 
-#### `wp borps skin:status`
+#### `wp skin:status`
 
 Checks system requirements and theme health.
 
 ```bash
 # Check system status
-wp borps skin:status
+wp skin:status
 
 # Run health checks
-wp borps skin:status --health
+wp skin:status --health
 
 # Check specific component
-wp borps skin:status --check=build
+wp skin:status --check=build
 ```
 
 **Health Checks:**
@@ -255,19 +255,19 @@ wp borps skin:status --check=build
 
 ### Advanced Commands
 
-#### `wp borps skin:optimize`
+#### `wp skin:optimize`
 
 Optimizes theme assets and performance.
 
 ```bash
 # Optimize images
-wp borps skin:optimize --images
+wp skin:optimize --images
 
 # Optimize CSS and JS
-wp borps skin:optimize --assets
+wp skin:optimize --assets
 
 # Full optimization
-wp borps skin:optimize --all
+wp skin:optimize --all
 ```
 
 **Optimization Features:**
@@ -277,19 +277,19 @@ wp borps skin:optimize --all
 - Unused CSS removal
 - Critical CSS generation
 
-#### `wp borps skin:scaffold`
+#### `wp skin:scaffold`
 
 Scaffolds theme structure and files.
 
 ```bash
 # Scaffold complete theme structure
-wp borps skin:scaffold
+wp skin:scaffold
 
 # Scaffold only specific parts
-wp borps skin:scaffold --components-only
+wp skin:scaffold --components-only
 
 # Force scaffolding (overwrite existing)
-wp borps skin:scaffold --force
+wp skin:scaffold --force
 ```
 
 **Scaffolded Structure:**
@@ -314,22 +314,22 @@ theme-root/
 
 ### Configuration Commands
 
-#### `wp borps skin:config`
+#### `wp skin:config`
 
 Manages WP-Skin configuration.
 
 ```bash
 # Show current configuration
-wp borps skin:config
+wp skin:config
 
 # Set configuration value
-wp borps skin:config set build.production true
+wp skin:config set build.production true
 
 # Get specific configuration
-wp borps skin:config get assets.css_path
+wp skin:config get assets.css_path
 
 # Reset to defaults
-wp borps skin:config reset
+wp skin:config reset
 ```
 
 **Configuration Options:**
@@ -364,38 +364,38 @@ Create custom WP-CLI commands for your theme:
 
 if (defined('WP_CLI') && WP_CLI) {
     class Custom_WPSkin_Commands {
-        
+
         /**
          * Sync theme assets with CDN
          */
         public function sync_cdn($args, $assoc_args) {
             WP_CLI::line('Syncing assets to CDN...');
-            
+
             $cdn_path = $assoc_args['cdn-path'] ?? '';
             if (empty($cdn_path)) {
                 WP_CLI::error('CDN path is required. Use --cdn-path=/path/to/cdn');
             }
-            
+
             // Your CDN sync logic here
-            
+
             WP_CLI::success('Assets synced successfully!');
         }
-        
+
         /**
          * Generate critical CSS
          */
         public function critical_css($args, $assoc_args) {
             $urls = $assoc_args['urls'] ?? home_url();
             $output = $assoc_args['output'] ?? get_template_directory() . '/critical.css';
-            
+
             WP_CLI::line("Generating critical CSS for: {$urls}");
-            
+
             // Critical CSS generation logic
-            
+
             WP_CLI::success("Critical CSS saved to: {$output}");
         }
     }
-    
+
     WP_CLI::add_command('wpskin:sync-cdn', 'Custom_WPSkin_Commands::sync_cdn');
     WP_CLI::add_command('wpskin:critical-css', 'Custom_WPSkin_Commands::critical_css');
 }
@@ -441,13 +441,13 @@ wp eval 'var_dump(class_exists("WordPressSkin\\Core\\Skin"));'
 **Build failures:**
 ```bash
 # Check system requirements
-wp borps skin:status --health
+wp skin:status --health
 
 # Verbose build output
-wp borps skin:build --verbose
+wp skin:build --verbose
 
 # Reset and rebuild
-wp borps skin:clean && wp borps skin:build
+wp skin:clean && wp skin:build
 ```
 
 **Permission errors:**

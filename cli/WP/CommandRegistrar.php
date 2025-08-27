@@ -28,22 +28,22 @@ class CommandRegistrar extends \WP_CLI_Command
         require_once __DIR__ . "/HelpCommand.php";
 
         // Register main help command
-        \WP_CLI::add_command("borps skin:help", HelpCommand::class);
+        \WP_CLI::add_command("skin:help", HelpCommand::class);
 
         // Register deployment commands
-        \WP_CLI::add_command("borps skin:deploy", DeployCommand::class);
+        \WP_CLI::add_command("skin:deploy", DeployCommand::class);
 
         // Register asset commands
-        \WP_CLI::add_command("borps skin:build", [__CLASS__, "build"]);
-        \WP_CLI::add_command("borps skin:watch", [__CLASS__, "watch"]);
+        \WP_CLI::add_command("skin:build", [__CLASS__, "build"]);
+        \WP_CLI::add_command("skin:watch", [__CLASS__, "watch"]);
 
         // Register scaffold commands
-        \WP_CLI::add_command("borps skin:component", [__CLASS__, "component"]);
-        \WP_CLI::add_command("borps skin:layout", [__CLASS__, "layout"]);
+        \WP_CLI::add_command("skin:component", [__CLASS__, "component"]);
+        \WP_CLI::add_command("skin:layout", [__CLASS__, "layout"]);
 
         // Register info commands
-        \WP_CLI::add_command("borps skin:info", [__CLASS__, "info"]);
-        \WP_CLI::add_command("borps skin:status", [__CLASS__, "status"]);
+        \WP_CLI::add_command("skin:info", [__CLASS__, "info"]);
+        \WP_CLI::add_command("skin:status", [__CLASS__, "status"]);
     }
 
     /**
@@ -56,8 +56,8 @@ class CommandRegistrar extends \WP_CLI_Command
      *
      * ## EXAMPLES
      *
-     *     wp borps skin:build
-     *     wp borps skin:build --production
+     *     wp skin:build
+     *     wp skin:build --production
      *
      * @when after_wp_load
      */
@@ -121,7 +121,7 @@ class CommandRegistrar extends \WP_CLI_Command
      *
      * ## EXAMPLES
      *
-     *     wp borps skin:watch
+     *     wp skin:watch
      *
      * @when after_wp_load
      */
@@ -162,8 +162,8 @@ class CommandRegistrar extends \WP_CLI_Command
      *
      * ## EXAMPLES
      *
-     *     wp borps skin:component navbar
-     *     wp borps skin:component hero --with-scss --with-js
+     *     wp skin:component navbar
+     *     wp skin:component hero --with-scss --with-js
      *
      * @when after_wp_load
      */
@@ -235,8 +235,8 @@ class CommandRegistrar extends \WP_CLI_Command
      *
      * ## EXAMPLES
      *
-     *     wp borps skin:layout single-post
-     *     wp borps skin:layout homepage
+     *     wp skin:layout single-post
+     *     wp skin:layout homepage
      *
      * @when after_wp_load
      */

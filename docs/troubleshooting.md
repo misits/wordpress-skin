@@ -57,7 +57,7 @@ Common issues and solutions when working with WP-Skin.
 
 3. **Force scaffolding:**
    ```bash
-   wp borps skin:scaffold --force
+   wp skin:scaffold --force
    ```
 
 4. **Manual scaffolding if auto-creation fails:**
@@ -465,7 +465,7 @@ Common issues and solutions when working with WP-Skin.
 
 ### Deploy Command Fails
 
-**Problem:** `wp borps skin:deploy` command errors or incomplete deployment.
+**Problem:** `wp skin:deploy` command errors or incomplete deployment.
 
 **Solutions:**
 
@@ -537,11 +537,11 @@ When reporting issues, include this information:
 ```bash
 # System information
 wp --info
-wp borps skin:status --detailed
+wp skin:status --detailed
 
 # Theme information
 wp theme list
-wp borps skin:info
+wp skin:info
 
 # Server information
 php -v

@@ -52,6 +52,13 @@ Skin::customizer('theme_options', function($section) {
 
 /*
 |--------------------------------------------------------------------------
+| Gutenberg Blocks
+|--------------------------------------------------------------------------
+| Blocks are auto-discovered from resources/blocks/
+*/
+
+/*
+|--------------------------------------------------------------------------
 | Custom Post Types (Optional)
 |--------------------------------------------------------------------------
 | Register custom post types with minimal configuration

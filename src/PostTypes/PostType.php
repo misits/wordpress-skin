@@ -10,11 +10,13 @@
 namespace WordPressSkin\PostTypes;
 
 use WordPressSkin\PostTypes\Traits\HandlesMeta;
+use WordPressSkin\PostTypes\Traits\HandlesAcf;
 
 defined('ABSPATH') or exit;
 
 class PostType {
     use HandlesMeta;
+    use HandlesAcf;
     
     /**
      * Post type name (override in child classes)
@@ -651,73 +653,6 @@ class PostType {
         return $this->title();
     }
     
-    /**
-     * Get ACF field value (if ACF plugin is active)
-     * 
-     * @param string $selector Field name or field key
-     * @param bool $formatValue Whether to apply formatting logic (default: true)
-     * @param bool $escapeHtml Whether to return HTML-safe version (default: false)
-     * @return mixed ACF field value or null if ACF not active
-     */
-    public function acf($selector, $formatValue = true, $escapeHtml = false) {
-        if (!$this->post) {
-            return null;
-        }
-        
-        // Check if ACF plugin is active
-        if (!function_exists('get_field')) {
-            return null;
-        }
-        
-        // Use get_field with all parameters
-        // Note: $escapeHtml parameter was added in ACF 6.0+
-        $reflection = new \ReflectionFunction('get_field');
-        $paramCount = $reflection->getNumberOfParameters();
-        
-        if ($paramCount >= 4) {
-            // ACF 6.0+ with escape_html parameter
-            return get_field($selector, $this->id, $formatValue, $escapeHtml);
-        } else {
-            // Older ACF versions
-            return get_field($selector, $this->id, $formatValue);
-        }
-    }
-    
-    /**
-     * Check if ACF field exists and has value
-     * 
-     * @param string $selector Field name or field key
-     * @return bool
-     */
-    public function hasAcf($selector) {
-        if (!$this->post || !function_exists('get_field')) {
-            return false;
-        }
-        
-        $value = get_field($selector, $this->id, false);
-        
-        // ACF returns false for non-existent fields, empty string for empty fields
-        return $value !== false && $value !== null && $value !== '';
-    }
-    
-    /**
-     * Get ACF field object (if ACF plugin is active)
-     * 
-     * @param string $selector Field name or field key
-     * @return array|null ACF field object or null if ACF not active
-     */
-    public function acfField($selector) {
-        if (!$this->post) {
-            return null;
-        }
-        
-        // Check if ACF plugin is active
-        if (!function_exists('get_field_object')) {
-            return null;
-        }
-        
-        return get_field_object($selector, $this->id);
-    }
     
     // ==========================================
     // Methods for Custom Post Type Extensions
