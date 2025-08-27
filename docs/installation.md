@@ -14,7 +14,7 @@ Add WP-Skin to your theme's `functions.php`:
 
 
 // Include WP-Skin
-require_once get_template_directory() . '/lib/wp-skin/bootstrap.php';
+require_once get_template_directory() . '/vendor/wordpress-skin/bootstrap.php';
 ```
 
 ### 2. Auto-Scaffolding
@@ -32,8 +32,8 @@ After installation, your theme will have this structure:
 
 ```
 wp-content/themes/your-theme/
-├── lib/
-│   └── wp-skin/                    # WP-Skin framework
+├── vendor/
+│   └── wordpress-skin/                    # WP-Skin framework
 ├── resources/                      # Auto-created by WP-Skin
 │   ├── src/
 │   │   ├── css/
@@ -108,10 +108,10 @@ Skin::hooks()
         add_theme_support('post-thumbnails');
         add_theme_support('title-tag');
         add_theme_support('html5', [
-            'search-form', 'comment-form', 'comment-list', 
+            'search-form', 'comment-form', 'comment-list',
             'gallery', 'caption', 'style', 'script'
         ]);
-        
+
         // Register navigation menus
         register_nav_menus([
             'primary' => 'Primary Navigation',

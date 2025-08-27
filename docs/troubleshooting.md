@@ -13,12 +13,12 @@ Common issues and solutions when working with WP-Skin.
 1. **Check include path:**
    ```php
    // Ensure correct path in functions.php
-   require_once get_template_directory() . '/lib/wp-skin/bootstrap.php';
+   require_once get_template_directory() . '/vendor/wordpress-routes/bootstrap.php';
    ```
 
 2. **Verify file permissions:**
    ```bash
-   ls -la wp-content/themes/your-theme/lib/wp-skin/
+   ls -la wp-content/themes/your-theme/vendor/wordpress-routes/
    # Files should be readable (644) and directories executable (755)
    ```
 
@@ -332,8 +332,8 @@ Common issues and solutions when working with WP-Skin.
 2. **Verify include order:**
    ```php
    // Load ORM before WP-Skin
-   require_once get_template_directory() . '/lib/wp-orm/bootstrap.php';
-   require_once get_template_directory() . '/lib/wp-skin/bootstrap.php';
+   require_once get_template_directory() . 'vendor/wordpress-orm/bootstrap.php';
+   require_once get_template_directory() . '/vendor/wordpress-routes/bootstrap.php';
    ```
 
 3. **Check database connection:**
@@ -577,7 +577,7 @@ wp plugin activate wp-skin-required-plugins-only
 
 ```
 wp-content/themes/your-theme/
-├── lib/wp-skin/                    # Framework files
+├── vendor/wordpress-routes/                    # Framework files
 ├── resources/                      # Build system
 │   ├── dist/                      # Built assets
 │   ├── src/                       # Source files

@@ -20,7 +20,7 @@ Include WP-Skin in your WordPress theme:
 
 ```php
 // In your theme's functions.php
-require_once get_template_directory() . '/lib/wp-skin/bootstrap.php';
+require_once get_template_directory() . '/vendor/wordpress-skin/bootstrap.php';
 ```
 
 ## Zero-Configuration Setup
@@ -30,7 +30,7 @@ WP-Skin automatically scaffolds your theme structure and creates essential files
 ### Theme Structure
 ```
 wp-content/themes/your-theme/
-├── lib/wp-skin/              # Framework
+├── vendor/wordpress-skin/    # Framework
 ├── resources/                # Auto-created assets
 │   ├── src/css/app.css      # Tailwind CSS
 │   ├── src/js/app.js        # JavaScript entry

@@ -43,7 +43,9 @@ class DeployCommand
         $theme_name = get_template();
 
         // Validate we're in a theme with WP-Skin
-        if (!file_exists($theme_root . "/lib/wp-skin/bootstrap.php")) {
+        if (
+            !file_exists($theme_root . "/vendor/wordpress-routes/bootstrap.php")
+        ) {
             \WP_CLI::error(
                 'WP-Skin not found in current theme. Make sure you\'re running this from a theme with WP-Skin installed.',
             );
@@ -252,7 +254,7 @@ class DeployCommand
         \WP_CLI::line("Build location: {$output_dir}");
         \WP_CLI::line("");
         \WP_CLI::line("Upload these directories to your production server:");
-        \WP_CLI::line("   - lib/wp-skin/ (WP-Skin core)");
+        \WP_CLI::line("   - vendor/wordpress-routes/ (WP-Skin core)");
         \WP_CLI::line("   - resources/assets/ (compiled CSS/JS)");
         \WP_CLI::line("   - resources/components/ (PHP components)");
         \WP_CLI::line("   - resources/layouts/ (PHP layouts)");
