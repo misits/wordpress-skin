@@ -42,7 +42,8 @@ function wpskin_autoload($class)
     $wpskin_len = strlen($wpskin_prefix);
     if (strncmp($wpskin_prefix, $class, $wpskin_len) === 0) {
         $relative_class = substr($class, $wpskin_len);
-        $file = $wpskin_base_dir . str_replace("\\", "/", $relative_class) . ".php";
+        $file =
+            $wpskin_base_dir . str_replace("\\", "/", $relative_class) . ".php";
 
         if (file_exists($file)) {
             require $file;
@@ -57,11 +58,11 @@ function wpskin_autoload($class)
     $app_len = strlen($app_prefix);
     if (strncmp($app_prefix, $class, $app_len) === 0) {
         $relative_class = substr($class, $app_len);
-        $file = $app_base_dir . str_replace("\\", "/", $relative_class) . ".php";
+        $file =
+            $app_base_dir . str_replace("\\", "/", $relative_class) . ".php";
 
         if (file_exists($file)) {
             require $file;
-            error_log("WP-Skin Autoloader: Loaded App class {$class} from {$file}");
             return;
         }
     }

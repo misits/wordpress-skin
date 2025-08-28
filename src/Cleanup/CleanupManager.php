@@ -25,6 +25,8 @@ class CleanupManager
         "remove_rest_api" => true,
         "remove_oembed" => true,
         "remove_admin_bar" => true,
+        "remove_file_editors" => true,
+        "remove_shortlink" => true,
     ];
 
     /**
@@ -151,6 +153,40 @@ class CleanupManager
             $this->restoreAdminBar();
             $this->activeFeatures = array_diff($this->activeFeatures, [
                 "remove_admin_bar",
+            ]);
+        }
+
+        // Handle file editors removal
+        if (
+            $this->config["remove_file_editors"] &&
+            !in_array("remove_file_editors", $this->activeFeatures)
+        ) {
+            $this->removeFileEditors();
+            $this->activeFeatures[] = "remove_file_editors";
+        } elseif (
+            !$this->config["remove_file_editors"] &&
+            in_array("remove_file_editors", $this->activeFeatures)
+        ) {
+            $this->restoreFileEditors();
+            $this->activeFeatures = array_diff($this->activeFeatures, [
+                "remove_file_editors",
+            ]);
+        }
+
+        // Handle shortlink removal
+        if (
+            $this->config["remove_shortlink"] &&
+            !in_array("remove_shortlink", $this->activeFeatures)
+        ) {
+            $this->removeShortlink();
+            $this->activeFeatures[] = "remove_shortlink";
+        } elseif (
+            !$this->config["remove_shortlink"] &&
+            in_array("remove_shortlink", $this->activeFeatures)
+        ) {
+            $this->restoreShortlink();
+            $this->activeFeatures = array_diff($this->activeFeatures, [
+                "remove_shortlink",
             ]);
         }
     }
@@ -427,6 +463,112 @@ class CleanupManager
     {
         // Remove the filter that disables admin bar
         remove_filter("show_admin_bar", "__return_false");
+    }
+
+    /**
+     * Remove file editors from admin
+     *
+     * @return void
+     */
+    private function removeFileEditors(): void
+    {
+        // Remove plugin editor menus
+        add_action("admin_menu", [$this, "removeFileEditorMenus"], 999);
+        
+        // Block direct access to editor pages
+        add_action("admin_init", [$this, "blockFileEditorAccess"]);
+    }
+
+    /**
+     * Remove file editor menu items
+     *
+     * @return void
+     */
+    public function removeFileEditorMenus(): void
+    {
+        // Only remove if file editors are disabled
+        if ($this->config["remove_file_editors"]) {
+            remove_submenu_page("plugins.php", "plugin-editor.php");
+            remove_submenu_page("themes.php", "theme-editor.php");
+            
+            // Remove site editor - try multiple possible menu locations
+            remove_submenu_page("themes.php", "site-editor.php");
+            remove_submenu_page("themes.php", "site-editor.php?p=%2F");
+            
+            // Also try removing by menu title (Full Site Editing/Editor)
+            global $submenu;
+            if (isset($submenu['themes.php'])) {
+                foreach ($submenu['themes.php'] as $key => $menu_item) {
+                    if (strpos($menu_item[2], 'site-editor.php') !== false) {
+                        unset($submenu['themes.php'][$key]);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Block direct access to file editor pages
+     *
+     * @return void
+     */
+    public function blockFileEditorAccess(): void
+    {
+        // Only block if file editors are disabled
+        if ($this->config["remove_file_editors"]) {
+            global $pagenow;
+            
+            if ($pagenow === "plugin-editor.php" || $pagenow === "theme-editor.php" || $pagenow === "site-editor.php") {
+                wp_safe_redirect(admin_url());
+                exit();
+            }
+        }
+    }
+
+    /**
+     * Restore file editors
+     *
+     * @return void
+     */
+    private function restoreFileEditors(): void
+    {
+        // Remove the hook that removes file editor menus
+        remove_action("admin_menu", [$this, "removeFileEditorMenus"]);
+        
+        // Remove the hook that blocks direct access
+        remove_action("admin_init", [$this, "blockFileEditorAccess"]);
+    }
+
+    /**
+     * Remove shortlink from head
+     *
+     * @return void
+     */
+    private function removeShortlink(): void
+    {
+        // Remove shortlink from head
+        remove_action("wp_head", "wp_shortlink_wp_head");
+        
+        // Remove shortlink HTTP header
+        remove_action("template_redirect", "wp_shortlink_header");
+    }
+
+    /**
+     * Restore shortlink
+     *
+     * @return void
+     */
+    private function restoreShortlink(): void
+    {
+        // Re-add shortlink to head (only if not already added)
+        if (!has_action("wp_head", "wp_shortlink_wp_head")) {
+            add_action("wp_head", "wp_shortlink_wp_head");
+        }
+        
+        // Re-add shortlink HTTP header (only if not already added)
+        if (!has_action("template_redirect", "wp_shortlink_header")) {
+            add_action("template_redirect", "wp_shortlink_header");
+        }
     }
 
     /**

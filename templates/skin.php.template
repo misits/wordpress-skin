@@ -125,6 +125,8 @@ Skin::getInstance()->configureCleanup([
     "remove_rest_api" => true, // Remove REST API headers
     "remove_oembed" => true, // Remove oEmbed
     "remove_admin_bar" => true, // Disable admin bar
+    "remove_file_editors" => true, // Disable file editors
+    "remove_shortlink" => true, // Remove shortlink
 ]);
 
 Skin::hooks()
