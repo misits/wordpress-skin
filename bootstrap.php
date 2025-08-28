@@ -31,23 +31,39 @@ if (!defined("WPSKIN_MODE")) {
 }
 
 /**
- * Autoloader for WP-Skin classes
+ * Autoloader for WP-Skin classes and App namespace
  */
 function wpskin_autoload($class)
 {
-    $prefix = "WordPressSkin\\";
-    $base_dir = WPSKIN_PATH . "/src/";
+    // Handle WordPressSkin namespace
+    $wpskin_prefix = "WordPressSkin\\";
+    $wpskin_base_dir = WPSKIN_PATH . "/src/";
 
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
+    $wpskin_len = strlen($wpskin_prefix);
+    if (strncmp($wpskin_prefix, $class, $wpskin_len) === 0) {
+        $relative_class = substr($class, $wpskin_len);
+        $file = $wpskin_base_dir . str_replace("\\", "/", $relative_class) . ".php";
+
+        if (file_exists($file)) {
+            require $file;
+            return;
+        }
     }
 
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace("\\", "/", $relative_class) . ".php";
+    // Handle App namespace for PhytoPass
+    $app_prefix = "App\\";
+    $app_base_dir = get_template_directory() . "/app/";
 
-    if (file_exists($file)) {
-        require $file;
+    $app_len = strlen($app_prefix);
+    if (strncmp($app_prefix, $class, $app_len) === 0) {
+        $relative_class = substr($class, $app_len);
+        $file = $app_base_dir . str_replace("\\", "/", $relative_class) . ".php";
+
+        if (file_exists($file)) {
+            require $file;
+            error_log("WP-Skin Autoloader: Loaded App class {$class} from {$file}");
+            return;
+        }
     }
 }
 
