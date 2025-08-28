@@ -17,6 +17,7 @@ use WordPressSkin\Traits\HandlesComponents;
 use WordPressSkin\Traits\HandlesPostTypes;
 use WordPressSkin\Traits\HandlesTaxonomies;
 use WordPressSkin\Traits\HandlesSecurity;
+use WordPressSkin\Traits\HandlesCleanup;
 
 defined("ABSPATH") or exit();
 
@@ -30,6 +31,7 @@ class Skin
     use HandlesPostTypes;
     use HandlesTaxonomies;
     use HandlesSecurity;
+    use HandlesCleanup;
 
     /**
      * Singleton instance
@@ -174,6 +176,16 @@ class Skin
     }
 
     /**
+     * Static method to access cleanup functionality
+     *
+     * @return \WordPressSkin\Cleanup\CleanupManager
+     */
+    public static function cleanup()
+    {
+        return self::getInstance()->getCleanupManager();
+    }
+
+    /**
      * Get theme root directory
      *
      * @return string
@@ -218,6 +230,7 @@ class Skin
         $this->initializePostTypes();
         $this->initializeTaxonomies();
         $this->initializeSecurity();
+        $this->initializeCleanup();
     }
 
     /**

@@ -117,6 +117,16 @@ Skin::getInstance()->configureSecurity([
     'idle_timeout' => 60,                 // 60 minutes timeout
 ]);
 
+// WordPress Cleanup Configuration
+Skin::getInstance()->configureCleanup([
+    "remove_comments" => true, // Completely remove comments system
+    "remove_block_styles" => true, // Remove block library styles
+    "remove_emoji" => true, // Remove emoji scripts
+    "remove_rest_api" => true, // Remove REST API headers
+    "remove_oembed" => true, // Remove oEmbed
+    "remove_admin_bar" => true, // Disable admin bar
+]);
+
 Skin::hooks()
     ->action('after_setup_theme', function() {
         // Essential WordPress theme features
