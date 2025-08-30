@@ -104,7 +104,7 @@ class DeployCommand
             $this->buildAssets($resources_dir);
         }
 
-        // Copy all theme files except .gitignore patterns
+        // Copy all theme files except .gitignore.prod patterns
         \WP_CLI::line("Copying theme files...");
         $this->copyThemeFiles($theme_root, $output_dir);
 
@@ -159,11 +159,11 @@ class DeployCommand
      */
     private function copyThemeFiles($theme_root, $output_dir)
     {
-        // Create .gitignore if it doesn't exist
-        $this->ensureGitignoreExists($theme_root);
+        // Create .gitignore.prod if it doesn't exist
+        $this->ensureGitignoreProdExists($theme_root);
 
-        // Read .gitignore patterns
-        $gitignore_patterns = $this->getGitignorePatterns($theme_root);
+        // Read .gitignore.prod patterns
+        $gitignore_patterns = $this->getGitignoreProdPatterns($theme_root);
 
         // Copy all files/directories except those matching .gitignore patterns
         $iterator = new \RecursiveIteratorIterator(
@@ -181,9 +181,9 @@ class DeployCommand
                 $item->getPathname(),
             );
 
-            // Skip if matches gitignore patterns
+            // Skip if matches gitignore.prod patterns
             if (
-                $this->matchesGitignorePattern(
+                $this->matchesGitignoreProdPattern(
                     $relativePath,
                     $gitignore_patterns,
                 )
@@ -368,14 +368,14 @@ class DeployCommand
     }
 
     /**
-     * Ensure .gitignore exists in theme root
+     * Ensure .gitignore.prod exists in theme root
      */
-    private function ensureGitignoreExists($theme_root)
+    private function ensureGitignoreProdExists($theme_root)
     {
-        $gitignore_file = $theme_root . "/.gitignore";
+        $gitignore_file = $theme_root . "/.gitignore.prod";
 
         if (!file_exists($gitignore_file)) {
-            \WP_CLI::line("Creating .gitignore file...");
+            \WP_CLI::line("Creating .gitignore.prod file...");
 
             $gitignore_content = '# WP-Skin Development Files
 # Exclude development and build files that shouldn\'t be in production
@@ -450,16 +450,16 @@ wp-content/debug.log
 ';
 
             file_put_contents($gitignore_file, $gitignore_content);
-            \WP_CLI::success("Created .gitignore file at {$gitignore_file}");
+            \WP_CLI::success("Created .gitignore.prod file at {$gitignore_file}");
         }
     }
 
     /**
-     * Read .gitignore patterns
+     * Read .gitignore.prod patterns
      */
-    private function getGitignorePatterns($theme_root)
+    private function getGitignoreProdPatterns($theme_root)
     {
-        $gitignore_file = $theme_root . "/.gitignore";
+        $gitignore_file = $theme_root . "/.gitignore.prod";
         $patterns = [];
 
         if (file_exists($gitignore_file)) {
@@ -480,9 +480,9 @@ wp-content/debug.log
     }
 
     /**
-     * Check if path matches gitignore patterns
+     * Check if path matches gitignore.prod patterns
      */
-    private function matchesGitignorePattern($path, $patterns)
+    private function matchesGitignoreProdPattern($path, $patterns)
     {
         foreach ($patterns as $pattern) {
             // Convert gitignore pattern to regex-like matching
