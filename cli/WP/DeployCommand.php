@@ -181,6 +181,15 @@ class DeployCommand
                 $item->getPathname(),
             );
 
+            // Always skip .git directories
+            if (
+                str_contains($relativePath, '/.git/') ||
+                str_ends_with($relativePath, '/.git') ||
+                $relativePath === '.git'
+            ) {
+                continue;
+            }
+
             // Skip if matches gitignore.prod patterns
             if (
                 $this->matchesGitignoreProdPattern(
@@ -379,6 +388,7 @@ class DeployCommand
 
             $gitignore_content = '# WP-Skin Development Files
 # Exclude development and build files that shouldn\'t be in production
+.git/
 
 # Node modules and build artifacts
 resources/node_modules/
@@ -447,6 +457,13 @@ wp-content/debug.log
 
 # Deployment builds
 *-production/
+
+# Libraries
+vendor/.claude/
+vendor/**/.git/
+vendor/**/.git
+**/vendor/**/.git/
+**/vendor/**/.git
 ';
 
             file_put_contents($gitignore_file, $gitignore_content);
