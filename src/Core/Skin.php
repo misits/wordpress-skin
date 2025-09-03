@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main Skin Class
  *
@@ -71,6 +72,7 @@ class Skin
         $this->resources_url = get_template_directory_uri() . "/resources";
 
         $this->initializeTraits();
+        $this->initializeMaintenanceMode();
     }
 
     /**
@@ -326,5 +328,161 @@ class Skin
     public static function post($post = null)
     {
         return new \WordPressSkin\PostTypes\PostType($post);
+    }
+
+    /**
+     * Enable or disable maintenance mode
+     *
+     * @param bool $enable True to enable, false to disable
+     * @param string|null $message Optional custom maintenance message
+     * @param string|null $title Optional custom maintenance title
+     * @return bool Success status
+     */
+    public static function maintenance(bool $enable = true, ?string $message = null, ?string $title = null): bool
+    {
+        if ($enable) {
+            $maintenance_data = [
+                'enabled' => true,
+                'enabled_at' => current_time('mysql'),
+                'message' => $message ?: 'We are currently performing scheduled maintenance. Please check back soon.',
+                'title' => $title ?: 'Maintenance'
+            ];
+
+            $result = update_option('wordpress_skin_maintenance_mode', $maintenance_data);
+
+            if ($result) {
+                add_action('template_redirect', [self::class, 'handleMaintenanceMode'], 1);
+            }
+
+            return $result;
+        } else {
+            return delete_option('wordpress_skin_maintenance_mode');
+        }
+    }
+
+    /**
+     * Check if maintenance mode is enabled
+     *
+     * @return bool
+     */
+    public static function isMaintenanceMode(): bool
+    {
+        $maintenance_data = get_option('wordpress_skin_maintenance_mode', false);
+        return is_array($maintenance_data) && isset($maintenance_data['enabled']) && $maintenance_data['enabled'];
+    }
+
+    /**
+     * Get maintenance mode data
+     *
+     * @return array|false
+     */
+    public static function getMaintenanceData()
+    {
+        return get_option('wordpress_skin_maintenance_mode', false);
+    }
+
+    /**
+     * Handle maintenance mode display
+     *
+     * @return void
+     */
+    public static function handleMaintenanceMode(): void
+    {
+        if (!self::isMaintenanceMode()) {
+            return;
+        }
+
+        if (current_user_can('administrator')) {
+            return;
+        }
+
+        $maintenance_data = self::getMaintenanceData();
+        $message = $maintenance_data['message'] ?? 'We are currently performing scheduled maintenance. Please check back soon.';
+        $title = $maintenance_data['title'] ?? 'Maintenance';
+
+        // Clean up empty paragraph tags
+        $message = preg_replace('/<p>\s*<\/p>/', '', $message);
+
+        wp_die(
+            self::getMaintenanceTemplate($message, $title),
+            'Site Maintenance',
+            [
+                'response' => 503,
+                'back_link' => false,
+                'text_direction' => 'ltr'
+            ]
+        );
+    }
+
+    /**
+     * Get maintenance mode template
+     *
+     * @param string $message
+     * @param string $title
+     * @return string
+     */
+    private static function getMaintenanceTemplate(string $message, string $title = 'Maintenance'): string
+    {
+        return '
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Site Maintenance</title>
+            <style>
+            html {
+                background-color: #fff;
+            }
+                body {
+                    border: none;
+                    box-shadow: none;
+                    height: 100vh;
+                    margin: 0 auto !important;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                    h1 {
+                    color: #000;
+                    font-size: 45px;
+                    margin-top: 0;
+                    border-bottom: 0;
+                    }
+
+                    .wp-die-message,
+                    .maintenance-container {
+                                    width: 100%;
+                    }
+
+                    #error-page p {
+                    margin: 0 0 20px;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    max-width: 600px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="maintenance-container">
+                <h1>' . $title . '</h1>
+                ' . $message . '
+            </div>
+        </body>
+        </html>
+        ';
+    }
+
+    /**
+     * Initialize maintenance mode hook
+     *
+     * @return void
+     */
+    private function initializeMaintenanceMode(): void
+    {
+        if (self::isMaintenanceMode()) {
+            add_action('template_redirect', [self::class, 'handleMaintenanceMode'], 1);
+        }
     }
 }
