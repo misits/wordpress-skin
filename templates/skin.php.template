@@ -135,6 +135,7 @@ Skin::hooks()
         add_theme_support('post-thumbnails');
         add_theme_support('title-tag');
         add_theme_support('html5', ['search-form', 'comment-form', 'comment-list']);
+        add_theme_support('menus');
 
         // Register navigation menus
         register_nav_menus([

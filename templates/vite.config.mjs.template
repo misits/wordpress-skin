@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import wordpressAlias from 'vite-plugin-wordpress-alias';
 
 export default defineConfig({
+  base: './',
   plugins: [
     react(),
     tailwindcss(),
