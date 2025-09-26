@@ -82,6 +82,29 @@ class PostType {
     protected function initialize() {
         // Override in child classes
     }
+
+    /**
+     * Get current queried post as an instance of the child class
+     *
+     * @param callable|null $callback Optional callback to transform the post
+     * @return \WordPressSkin\PostTypes\PostType|mixed|null
+     */
+    public static function current(?callable $callback = null)
+    {
+        wp_reset_query();
+
+        // Get the queried object (post, page, etc.)
+        $queriedObject = get_queried_object();
+
+        if (!$queriedObject || !($queriedObject instanceof \WP_Post)) {
+            return null;
+        }
+
+        // Use late static binding to instantiate the actual child class
+        $postType = new static($queriedObject);
+
+        return $callback ? $callback($postType) : $postType;
+    }
     
     /**
      * Get post ID

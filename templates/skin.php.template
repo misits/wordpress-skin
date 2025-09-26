@@ -130,7 +130,7 @@ Skin::getInstance()->configureCleanup([
 ]);
 
 Skin::hooks()
-    ->action('after_setup_theme', function() {
+    ->action('init', function() {
         // Essential WordPress theme features
         add_theme_support('post-thumbnails');
         add_theme_support('title-tag');
