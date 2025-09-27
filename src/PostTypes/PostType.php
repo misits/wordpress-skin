@@ -274,14 +274,24 @@ class PostType {
     }
     
     /**
-     * Get featured image URL
-     * 
-     * @param string $size Image size
-     * @return string
+     * Get featured image URL or execute callback with Media object
+     *
+     * @param string|callable $size Image size or callback function
+     * @return string|mixed
      */
     public function thumbnail($size = 'thumbnail') {
         if (!$this->post) return '';
-        
+
+        // If first parameter is a callable, execute it with Media object
+        if (is_callable($size)) {
+            $thumbnailId = get_post_thumbnail_id($this->post);
+            if ($thumbnailId) {
+                $media = new \WordPressSkin\Media\Media($thumbnailId);
+                return $size($media);
+            }
+            return null;
+        }
+
         return get_the_post_thumbnail_url($this->post, $size) ?: '';
     }
     

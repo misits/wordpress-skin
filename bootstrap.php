@@ -337,6 +337,9 @@ function wpskin_boot()
     // Initialize the main Skin class
     \WordPressSkin\Core\Skin::getInstance();
 
+    // Initialize the Size class for image processing
+    \WordPressSkin\Media\Size::get_instance()->init();
+
     // Auto-scaffold resources directory structure
     wpskin_scaffold_resources();
 

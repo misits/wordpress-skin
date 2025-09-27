@@ -184,21 +184,40 @@ class ComponentManager {
     
     /**
      * Auto-register components from resources/components/ directory
-     * 
+     *
      * @return void
      */
     private function autoRegisterComponents() {
         $componentsDir = $this->skin->getResourcesPath() . '/components';
-        
+
         if (!is_dir($componentsDir)) {
             return;
         }
-        
+
+        // Register components from root directory
         $files = glob($componentsDir . '/*.php');
-        
         foreach ($files as $file) {
             $name = basename($file, '.php');
             $this->register($name, $file);
+        }
+
+        // Register components from subdirectories (supports nested folders)
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($componentsDir, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isFile() && $file->getExtension() === 'php') {
+                // Get relative path from components directory
+                $relativePath = str_replace($componentsDir . '/', '', $file->getPathname());
+                // Remove .php extension and use forward slashes
+                $componentName = str_replace('.php', '', $relativePath);
+                // Register if not already registered (root files already registered above)
+                if (!$this->has($componentName)) {
+                    $this->register($componentName, $file->getPathname());
+                }
+            }
         }
     }
     
@@ -241,7 +260,7 @@ class ComponentManager {
     
     /**
      * Resolve template path
-     * 
+     *
      * @param string $template Template path
      * @return string|null Resolved path or null if not found
      */
@@ -250,24 +269,27 @@ class ComponentManager {
         if (file_exists($template)) {
             return $template;
         }
-        
+
         // Add .php extension if not present
         if (!str_ends_with($template, '.php')) {
             $template .= '.php';
         }
-        
+
+        // Support both forward and backward slashes
+        $template = str_replace('\\', '/', $template);
+
         $possiblePaths = [
             $this->skin->getResourcesPath() . '/components/' . $template,
             $this->skin->getThemeRoot() . '/components/' . $template,
             $this->skin->getThemeRoot() . '/' . $template
         ];
-        
+
         foreach ($possiblePaths as $path) {
             if (file_exists($path)) {
                 return $path;
             }
         }
-        
+
         return null;
     }
 }
