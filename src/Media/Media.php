@@ -306,17 +306,42 @@ class Media {
     public function getSvgContent($attr = []) {
         if (!$this->isSvg()) return '';
 
+        // Try to get SVG content from local file first
         $path = $this->path();
-        if (!$path || !file_exists($path)) {
-            // Fallback to URL if local path doesn't exist
-            $url = $this->url();
-            return sprintf('<img src="%s" %s />', esc_url($url), $this->buildAttributes($attr));
+        $svg_content = '';
+
+        if ($path) {
+            // Try different path resolutions
+            if (file_exists($path)) {
+                $svg_content = file_get_contents($path);
+            } else {
+                // Try to resolve path from uploads directory
+                $upload_dir = wp_upload_dir();
+                $url = $this->url();
+                $relative_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $url);
+                if (file_exists($relative_path)) {
+                    $svg_content = file_get_contents($relative_path);
+                }
+            }
         }
 
-        // Read SVG content
-        $svg_content = file_get_contents($path);
+        // If local file failed, try to fetch from URL
         if (!$svg_content) {
-            return '';
+            $url = $this->url();
+            if ($url) {
+                // Try to fetch SVG content from URL
+                $response = wp_remote_get($url);
+                if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+                    $svg_content = wp_remote_retrieve_body($response);
+                }
+            }
+        }
+
+        // If still no content, fallback to object tag (better than img for SVG)
+        if (!$svg_content) {
+            $url = $this->url();
+            $attrs = $this->buildAttributes($attr);
+            return sprintf('<object data="%s" type="image/svg+xml" %s></object>', esc_url($url), $attrs);
         }
 
         // Add custom attributes to the SVG element
@@ -338,6 +363,15 @@ class Media {
         // Find the opening <svg tag
         if (preg_match('/<svg([^>]*)>/', $svg_content, $matches)) {
             $existing_attrs = $matches[1];
+
+            // Add default width and height if missing (important for mobile)
+            if (!str_contains($existing_attrs, 'width=') && !isset($attr['width'])) {
+                $attr['width'] = '100%';
+            }
+            if (!str_contains($existing_attrs, 'height=') && !isset($attr['height'])) {
+                $attr['height'] = 'auto';
+            }
+
             $new_attrs = $this->buildAttributes($attr);
 
             // Merge attributes
