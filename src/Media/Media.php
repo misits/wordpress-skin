@@ -288,6 +288,83 @@ class Media {
     }
 
     /**
+     * Check if attachment is an SVG
+     *
+     * @return bool
+     */
+    public function isSvg() {
+        $mime_type = $this->mimeType();
+        return $mime_type === 'image/svg+xml' || $this->extension() === 'svg';
+    }
+
+    /**
+     * Get SVG content as inline HTML
+     *
+     * @param array $attr Additional HTML attributes for the SVG element
+     * @return string SVG HTML content
+     */
+    public function getSvgContent($attr = []) {
+        if (!$this->isSvg()) return '';
+
+        $path = $this->path();
+        if (!$path || !file_exists($path)) {
+            // Fallback to URL if local path doesn't exist
+            $url = $this->url();
+            return sprintf('<img src="%s" %s />', esc_url($url), $this->buildAttributes($attr));
+        }
+
+        // Read SVG content
+        $svg_content = file_get_contents($path);
+        if (!$svg_content) {
+            return '';
+        }
+
+        // Add custom attributes to the SVG element
+        if (!empty($attr)) {
+            $svg_content = $this->addSvgAttributes($svg_content, $attr);
+        }
+
+        return $svg_content;
+    }
+
+    /**
+     * Add attributes to SVG element
+     *
+     * @param string $svg_content SVG content
+     * @param array $attr Attributes to add
+     * @return string Modified SVG content
+     */
+    private function addSvgAttributes($svg_content, $attr) {
+        // Find the opening <svg tag
+        if (preg_match('/<svg([^>]*)>/', $svg_content, $matches)) {
+            $existing_attrs = $matches[1];
+            $new_attrs = $this->buildAttributes($attr);
+
+            // Merge attributes
+            $replacement = '<svg' . $existing_attrs . ' ' . $new_attrs . '>';
+            $svg_content = preg_replace('/<svg([^>]*)>/', $replacement, $svg_content, 1);
+        }
+
+        return $svg_content;
+    }
+
+    /**
+     * Build HTML attributes string from array
+     *
+     * @param array $attr Attributes array
+     * @return string HTML attributes string
+     */
+    private function buildAttributes($attr) {
+        $attributes = [];
+        foreach ($attr as $key => $value) {
+            if ($value !== null && $value !== false) {
+                $attributes[] = sprintf('%s="%s"', esc_attr($key), esc_attr($value));
+            }
+        }
+        return implode(' ', $attributes);
+    }
+
+    /**
      * Get attachment metadata
      *
      * @param bool $refresh Force refresh metadata
@@ -646,6 +723,11 @@ class Media {
      */
     public function html($size = 'full', $crop = null, $attr = [], $responsive = true) {
         if (!$this->attachment) return '';
+
+        // Handle SVG files specially
+        if ($this->isSvg()) {
+            return $this->getSvgContent($attr);
+        }
 
         if ($this->isImage()) {
             if ($responsive && is_string($size) && $this->hasResponsiveVariants($size)) {

@@ -44,7 +44,7 @@ class DeployCommand
 
         // Validate we're in a theme with WP-Skin
         if (
-            !file_exists($theme_root . "/vendor/wordpress-routes/bootstrap.php")
+            !file_exists($theme_root . "/vendor/wordpress-skin/bootstrap.php")
         ) {
             \WP_CLI::error(
                 'WP-Skin not found in current theme. Make sure you\'re running this from a theme with WP-Skin installed.',
