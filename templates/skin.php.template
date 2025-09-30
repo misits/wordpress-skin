@@ -137,11 +137,45 @@ Skin::hooks()
         add_theme_support('html5', ['search-form', 'comment-form', 'comment-list']);
         add_theme_support('menus');
 
+        // Add excerpt support to pages
+        add_post_type_support('page', 'excerpt');
+
+        // allow SVG uploads
+        function mime_types($mimes) {
+            $mimes['svg'] = 'image/svg+xml';
+            return $mimes;
+        }
+        add_filter('upload_mimes', 'mime_types');
+
         // Register navigation menus
         register_nav_menus([
             'primary' => 'Primary Navigation'
         ]);
     });
+    /*
+    ->action('admin_menu', function() {
+        // Remove Posts from admin menu
+        remove_menu_page('edit.php');
+        remove_menu_page('edit-comments.php');
+        remove_submenu_page('edit.php', 'post-new.php');
+    })
+    ->filter('register_post_type_args', function($args, $post_type) {
+        // Hide default post type from public queries and admin
+        if ($post_type === 'post') {
+            $args['public'] = false;
+            $args['show_ui'] = false;
+            $args['show_in_menu'] = false;
+            $args['show_in_admin_bar'] = false;
+            $args['show_in_nav_menus'] = false;
+            $args['can_export'] = false;
+            $args['has_archive'] = false;
+            $args['exclude_from_search'] = true;
+            $args['publicly_queryable'] = false;
+            $args['show_in_rest'] = false;
+        }
+        return $args;
+    }, 10, 2);
+    */
 
 /*
 |--------------------------------------------------------------------------
